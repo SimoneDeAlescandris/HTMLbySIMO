@@ -25,6 +25,8 @@
   - [Embed di Video](#embed-di-video)
 - [Bibliografia](#bibliografia)<br><br>
 
+<img src="./img/9_Markdown.png" alt="Logo Git" title="Logo Git" width="34px" style="float:left; margin-right:12px;">
+
 # **Introduzione**
 
 Markdown è uno dei linguaggi di markup più utilizzati per aggiungere elementi formattati in documenti di testo, creato nel 2004 da John Gruber.  

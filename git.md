@@ -22,7 +22,11 @@
 - [Connect to a `remote` server](#connect-to-a-remote-server)
   - [remote](#remote)
   - [clone](#clone)
-  - []() <!-- TODO -->
+  - [push](#push)
+  - [pull](pull)
+  - [fetch](#fetch)
+  - [merge](#merge)
+  - [rebase](#rebase)
 - [Riassunto](#riassunto)
 - [Bibliografia](#bibliografia)
 
@@ -185,13 +189,13 @@ git config --global credential.helper osxkeychain  # Salva in modo permanente su
   ```  
 
 - **<span id="tag" style="font-size: 16px;">`git tag`</span>**: è un'etichetta che viene assegnata a un commit specifico per indicare un <u>commit è importante</u> ed è usato spesso per segnare versioni stabili (esempio: `v1.0`, `v2.1.5`, ecc.).  
-  1. Usando semplicemente `git tag` andremo ad <u>elencare</u> tutti i tag, ordinati alfabeticamente. Non indica a quale commit puntano a meno che non si usi `git show`.
-  2. Per <u>filtrare</u> i tag si usa `-l`. Ad esempio, `git tag -l 'v1.8.5*'` elencherà solo i tag che iniziano con `v1.8.5`.
-  3. **Lightweight Tag** (tag leggero): un semplice riferimento, un puntatore, ad un commit. Non contiene informazioni extra come data, autore, messaggio. È praticamente come un **segnalibro**.
+  Usando semplicemente `git tag` andremo ad <u>elencare</u> tutti i tag, ordinati alfabeticamente. Non indica a quale commit puntano a meno che non si usi `git show`. Per <u>filtrarli</u> si usa `-l`. Ad esempio, `git tag -l 'v1.8.5*'` elencherà solo i tag che iniziano con `v1.8.5`.  
+
+  1. **Lightweight Tag** (tag leggero): un semplice riferimento, un puntatore, ad un commit. Non contiene informazioni extra come data, autore, messaggio. È praticamente come un **segnalibro**.
 		```powershell
 		git tag nome-tag
 		```  
-  4. **Annotated Tag** (tag annotato): questo tipo di tag viene salvato nel database Git come oggetto completo. È la <u>forma raccomandata</u> quando si rilasciano versioni ufficiali di un progetto perché conserva più informazioni.  
+  2. **Annotated Tag** (tag annotato): questo tipo di tag viene salvato nel database Git come oggetto completo. È la <u>forma raccomandata</u> quando si rilasciano versioni ufficiali di un progetto perché conserva più informazioni.  
 		```powershell
 		git tag -a v1.4 -m 'my version 1.4'
 		```
@@ -202,16 +206,12 @@ git config --global credential.helper osxkeychain  # Salva in modo permanente su
 		- Messaggio di tag;  
 		- Possibilità di firma con <abbr title="GNU Privacy Guard">GPG</abbr>.  
 	
-  Quando si va a creare localmente un tag, Git lo memorizza solo nella nostra repository locale e per inviarlo ad server remoto dobbiamo eseguire, in ordine, i seguenti comandi:
-	```
-	git push <shortname> <nome-branch>
-	git push <tagname>
-	```
-	oppure se si ha necessità di inviare più tag assieme si può usare
-	```
-	git push <shortname> <nome-branch>
-	git push --tags
-	```
+  Quando si va a creare localmente un tag, Git lo memorizza solo nella nostra repository locale e per inviarlo ad server remoto dobbiamo eseguire, in ordine, i seguenti comandi:  
+	```powershell  
+	git push <shortname> <nome-branch>    # Classico comando
+	git push <tagname>                    # IMPORTANTE: per inviare un SINGOLO tag, <tagname>
+	git push --tags                       # IMPORTANTE: per inviare PIÙ tag assieme
+	```  
 
 - **<span id="show" style="font-size: 16px;">`git show`</span>**: mostra le informazioni salvate nel tag annotato e il commit a cui punta.  
   ```powershell
@@ -317,6 +317,7 @@ Nei remoti si possono eseguire comandi come:
   ```powershell
   git remote                                                # ELENCA [...] associati ai remoti
   git remote -v                                             # ELENCA gli URL associati ai remoti (fetch e push)
+  git remote show <shortname>                               # VISUALIZZARE informazioni più specifiche sul remoto
   git remote add <shortname> <url>                          # AGGIUNGE un nuovo remoto
   git remote rename <vecchio-shortname> <nuovo-shortname>   # RINOMINA un remoto
   git remote set-url <shortname> <url>                      # SOVRASCRIVE l'URL di un remoto
@@ -377,7 +378,7 @@ Nei remoti si possono eseguire comandi come:
 - **<span id="push" style="font-size: 16px;">`git push`</span>**: invia i commit dal repository locale a quello remoto.  
   ```powershell  
   git push origin <nome-branch>       # INVIA uno specifico branch a uno specifico remoto
-  git push -u origin <nome-branch>    # IMPOSTA il branch remoto come tracciato (upstream), per evitare di dover sempre ripetere <shortname> e <nome-branch>
+  git push -u <shortname> <nome-branch>    # IMPOSTA il branch remoto come tracciato (upstream), per evitare di dover sempre ripetere <shortname> e <nome-branch>
   git push                            # INVIA le modifiche al branch remoto TRACCIATO
   git push --tags                     # Invia tutti i tag locali al repository remoto
   git push origin :nome-branch        # Elimina un branch remoto
@@ -390,7 +391,7 @@ Nei remoti si possono eseguire comandi come:
   git pull origin <nome-branch>   # Preleva e unisce un branch remoto specifico
   ```  
 
-- **<span id="fetch" style="font-size: 16px;">`git fetch`</span>**: scarica gli oggetti dal remoto ma **NON** li unisce nel branch attuale.  
+- **<span id="fetch">`git fetch`</span>**: scarica gli oggetti dal remoto ma **NON** li unisce nel branch attuale.  
   ```powershell
   git fetch                       # Scarica tutti i branch remoti e gli aggiornamenti
   git fetch origin                # Scarica solo dal remoto `origin`
@@ -398,7 +399,7 @@ Nei remoti si possono eseguire comandi come:
   git fetch --all                 # Scarica da tutti i remoti configurati
   ```  
 
-- **<span id="merge" style="font-size: 16px;">`git merge`</span>**: unisce un branch (o commit) nel branch corrente.  
+- **<span id="merge">`git merge`</span>**: unisce un branch (o commit) nel branch corrente.  
   ```powershell  
   git merge <branch>            # Unisce il branch indicato nel branch attuale
   git merge --no-ff             # Forza la creazione di un commit di merge anche se è possibile un fast-forward
@@ -431,97 +432,36 @@ Nei remoti si possono eseguire comandi come:
       ```  
       - Sostituisci `pick` con `reword` per cambiare il messaggio.  
       - Usa `squash` (o `s`) per unire quel commit con il precedente.  
-  3. Salva ed esci; Git ti guiderà nel riscrivere i messaggi o risolvere conflitti.  
+  3. Salva ed esci; Git ti guiderà nel riscrivere i messaggi o risolvere conflitti. In particolare, se hai modificato un solo file e ti interessano solo le sue modifiche: copiale ed incollale; fai un `git add <file>`; poi per due volte `git rebase --continue` per confermare tutte le operazioni.  
   4. Alla fine avrai una serie di nuovi commit con nuovi hash. Per applicare queste modifiche al remoto usa `git push --force`.  
----
 
-<!-- Nel libro ProGit sono arrivato a pagina 42 -->  
+# Riassunto  
 
----
+<!-- Elencare qui quindi le azioni da fare per instanziare un progetto in Git. -->
 
-Per associare il tuo repository locale a un repository remoto, si usa:
+Se l'intenzione è quella di collegarci ad un remoto, e potenzialmente collaborare con altri sviluppatori, [configurare](#configurazione-iniziale-di-git) le credenziali di Git in modo che corrispondano a quelle dove è hostato il remoto:  
+```powershell  
+git config --global user.name "IlTuoNomeUtente"
+git config --global user.email "la.tua.email@example.com"
+git config --global --add safe.directory /storage/emulated/0/Download/uni
+```  
 
-```bash
-git remote add origin https://github.com/utente/nome-repo.git
-```
+- Se vogliamo partire da un progetto esistente, impostando lo *shortname* come **origin**, usare:  
+  ```powershell  
+  git clone <URL>
+  ```  
+  Poi continuare dal punto 3.  
 
-In questo caso `origin` è un nome convenzionale usato per indicare l’URL remoto predefinito. Puoi avere più remoti, ciascuno con un nome diverso (es. `origin`, `upstream`, ecc.).
-
-Una volta configurato il collegamento, puoi:
-- **inviare le modifiche locali** al server remoto con:
-  ```bash
-  git push origin master
-  ```
-
-- **recuperare modifiche da altri sviluppatori** con:
-  ```bash
-  git pull origin master
-  ```
-
-Oppure semplicemente usare:
-```bash
-git clone https://github.com/utente/nome-repo.git
-```
-che scarica tutto il repository remoto (con la cronologia completa) e imposta già `origin` come remoto predefinito.
-
-Perché è utile sapere tutto questo già durante la configurazione iniziale?  
-Perché **le credenziali che imposti in locale** (tramite `git config`) verranno usate per firmare i tuoi commit, e per **autenticarti** quando interagirai con i remoti. Se non sono corrette o coerenti con quelle usate su GitHub, potresti incontrare errori durante il `push`.
-
-Ad esempio:
-```bash
-git config --global user.name "Simone"
-git config --global user.email "simone@example.com"
-```
-
-Se il tuo account GitHub è registrato con un’altra email, GitHub potrebbe non associare correttamente i tuoi commit al tuo profilo. Per evitare problemi, è buona norma usare le **stesse credenziali in locale e sul remoto**.
-
-> ✅ Suggerimento: dopo aver fatto `git push`, visita il tuo repository su GitHub e controlla che il commit risulti attribuito al tuo utente. In caso contrario, verifica che l’email configurata sia corretta.
-
----
-
-<!-- 
-Capire come cambiare l'url di git remote add origin perché ho cambiato nome alla repository su git... 
-In generale rivedermi git remote.
--->
-
-[Collegarsi ad un server remoto](https://youtu.be/qj_q0idpeMQ?t=641&si=9j7vWgyLVRmaP7Nv) (come GitHub) dobbiamo usare il comando `$ git remote`.  
-
-```powershell
-% git remote add origin https://github.com/GiuIiopaesani/sitoweb
-```
-
-Per caricare poi tutti i file della nostra directory in una repository dobbiamo poi usare il comando
-
-```powershell
-$ git push origin master
-$ git push -u
-```
-
-L’opzione `-u` ci permetterebbe di salvare quello che stiamo per inserire come default per la prossima volta che useremo il comando `$ git push`.
-
-> L’ordine quindi sarebbe quello di eseguire il comando `add` per ogni nuovo file aggiunto, `status` per verificare la situazione e `commit` per salvare tutto, poi `push` e quindi le cose si troveranno sul nostro server remoto.
-
-https://www.instagram.com/p/C_K4qfnI2Ga/?igsh=MW0ya3kyZnMwbGJsdA==
-
-# Riassunto
-
-<!-- 
-Elencare qui quindi le azioni da fare per instanziare un progetto in Git. 
--->
-
-1. Inizializziamo un progetto non esistente muovendoci nella _working directory_ con `cd` o aprendo vscode in quella cartella e usiamo:
-   ```powershell
-   git init
-   ```
-  1. (OPZIONALE)
-     Se vogliamo partire da un progetto esistente:
-     ```powershell
-     git clone <URL>
-     ```
-     ```powershell
-     git remote add <nome> <URL>
-     ```
-etc.
+1. Inizializziamo un progetto non esistente muovendoci nella _working directory_ con `cd` o aprendo vscode in quella cartella, usando [`git init`](#init).  
+2. Collegare il nostro repository locale ad uno remoto usando:  
+  ```powershell  
+  git remote add <nome> <URL>
+  ```  
+1. Aggiungere file usare [`git add`](#add).  
+2. Verificare che non ci siano problemi usando [`git status`](#status).  
+3. Salvare le modifiche usando [`git commit`](#commit).  
+4. Inviare le modifiche al remoto usando [`git push -u <shortname> <nome-branch>`](#push). `-u` per rendere di default le opzioni che seguono, in modo da dover fare poi solo `git push`.  
+5. Allinearsi col remoto, nel caso lavorassimo da più di un device o condividessimo il progetto con altri sviluppatori, usando [`git pull <shortname> <nome-branch>`](#pull).   
 
 # Bibliografia
 
@@ -534,3 +474,6 @@ etc.
 - [Version control in VS Code](https://code.visualstudio.com/docs/introvideos/versioncontrol);
 - [Working with GitHub in VS Code](https://code.visualstudio.com/docs/sourcecontrol/github);
 - [git - la guida tascabile](https://rogerdudler.github.io/git-guide/index.it.html).
+
+<!-- Nel libro ProGit sono arrivato a pagina 45 -->  
+https://www.instagram.com/p/C_K4qfnI2Ga/?igsh=MW0ya3kyZnMwbGJsdA==
