@@ -131,10 +131,9 @@ git config --global credential.helper osxkeychain  # Salva in modo permanente su
   ```
   Esempio di output:
 	```powershell
-	 M README		      # M	 : file modificato, ma non ancora aggiunto all'area di stage
-	M  lib/simplegit.rb   # file modificato ed è già in area di stage.
-	MM Rakefile		      # MM : file modificato, messo in stage e poi ulteriormente modificato.
-	A  lib/git.rb		  # A	 : file, nuovo, aggiunto all'area di stage
+  U  README.md		    # U	 : file non tracciato, non in stage
+  A  snake.c		      # A	 : file, nuovo, aggiunto all'area di stage
+	M  test.py		      # M	 : file modificato, ma non ancora aggiunto all'area di stage
 	?? LICENSE.txt		  # ?? : file nuovo, non tracciato
 	```
 
@@ -154,7 +153,7 @@ git config --global credential.helper osxkeychain  # Salva in modo permanente su
   L'opzione `-m`, non necessaria, permette di scrivere direttamente un messaggio di fianco ad ogni commit, per documentare le modifiche effettuate.  
 
   Se ti fossi dimenticato di includere un file o volessi correggere il messaggio del commit precedente, senza dover creare un secondo commit, puoi usare `--amend.`. Questo comando **non modifica** il vecchio commit, ma ne crea uno nuovo che lo sostituisce con un hash diverso. Git "rigioca" l’ultima snapshot (in stage) e ci applica il nuovo contenuto o messaggio. Ciò significa che se non cambi nulla, ma premi "salva", Git riscrive il commit identico a quello precedente, ma con un hash diverso.  
-  ```powershell
+  ```powershell  
   git commit -m "Initial commit"
   git add forgotten_file.txt
   git commit --amend 			# Modifica l'ultimo commit, utile per correggere il messaggio o aggiungere altri file dimenticati.
@@ -435,6 +434,137 @@ Nei remoti si possono eseguire comandi come:
   3. Salva ed esci; Git ti guiderà nel riscrivere i messaggi o risolvere conflitti. In particolare, se hai modificato un solo file e ti interessano solo le sue modifiche: copiale ed incollale; fai un `git add <file>`; poi per due volte `git rebase --continue` per confermare tutte le operazioni.  
   4. Alla fine avrai una serie di nuovi commit con nuovi hash. Per applicare queste modifiche al remoto usa `git push --force`.  
 
+# Git Aliases
+
+Gli alias in Git permettono di abbreviare i comandi più utilizzati, rendendo il lavoro più rapido ed efficiente. Invece di digitare l'intero comando, puoi configurare una scorciatoia personalizzata. Gli alias non modificano il comportamento di Git, ma semplicemente sostituiscono il comando originale con quello abbreviato.
+
+```powershell
+git config --global alias.unstage 'reset HEAD --'
+git unstage <file>    # Equivalente a `git reset HEAD <file>`
+```
+```powershell
+git config --global alias.last 'log -1 HEAD'
+git last
+```
+
+As you can tell, Git simply replaces the new command with whatever you alias it for. However, maybe you want to run an external command, rather than a Git subcommand. In that case, you start the command with a ! character. This is useful if you write your own tools that work with a Git repository. We can demonstrate by aliasing git visual to run gitk:
+
+```powershell
+git config --global alias.visual "!gitk"
+```
+
+How to Create Alias to git commands
+# git config --global alias.lo "log --oneline" -----> To create an Alias to Command
+# git config --global --unset alias.lo -----> To Remove an Alias
+# git config --global --unset user.name -----> to remove username
+
+# Git Branching
+
+<!-- TODO -->
+
+I branch ('ramificazioni') sono utilizzati per sviluppare features che sono isolate l'una dall'altra. II branch master è quello di default quando crei un repository. Puoi usare altri branch per lo sviluppo ed infine incorporarli ('merge') nel master branch una volta completati.
+
+crea un nuovo branch chiamato "feature_x" e passa al nuovo branch usando `git checkout -b feature_x`
+ritorna di nuovo su master `git checkout master`
+e cancella il branch creato precedenza `git branch -d feature_x`
+il branch non sarà disponibile agli altri fino a quando non verrà inviato al repository remoto `git push origin <branch>`
+
+<img src="./img/M_Branch.png" alt="Rappresentazione del workflow di un progetto che utilizza diversi branch" title="Workflow su Git con i Branch" width="50%" style="display:block; margin-left:auto; margin-right:auto;">
+
+## Cos'è git?
+I repository online e locali possono essere divisi in ramificazioni (Branch). 
+I branch (ramificazioni) permettono di creare delle versioni assestanti del codice master. Queste versioni "assestanti" permettono la creazione di features o aggiornamenti in fase alpha che non vanno ad intaccare minimamente il codice del progetto. Finito la scrittura della ramificazione il branch verrà unito con il master <br>
+
+## Gestire i Branch
+Lista dei Rami:
+
+      git branch
+Creiamo un branch con:
+      
+      git branch nomeBranch
+      Esempio: git branch feature
+Cambia i rami:
+
+      git checkout nomeBranch
+      Esempio: git checkout feature
+Per ritornare al branch originale digitiamo:
+
+      git checkout master
+Eliminare il ramo:
+      
+      git branch -d nomeBranch
+      Esempio: git branch -d feature
+Crea il ramo e passa a quel branch:
+
+      git checkout -b nomeBranch
+      Esempio: git checkout -b feature
+Per unire il branch al repository originale usiamo (ricordatevi di fare un commit nel branch):
+      
+      git checkout master
+      git merge feature
+
+---
+
+Describe branching strategy you have used?
+
+Feature branching
+A feature branch model keeps all of the changes for a particular feature inside of a branch. When the feature is fully tested and validated by automated tests, the branch is then merged into master.
+
+Task branching
+In this model each task is implemented on its own branch with the task key included in the branch name It is easy to see which code implements which task, just look for the task key in the branch name.
+
+Release branching
+Once the develop branch has acquired enough features for a release, you can clone that branch to form a Release branch. Creating this branch starts the next release cycle, so no new features can be added after this point, only bug fixes, documentation generation, and other release-oriented tasks should go in this branch. Once it is ready to ship, the release gets merged into master and tagged with a version number. In addition, it should be merged back into develop branch, which may have progressed since the release was initiated.
+
+---
+
+What is git stash?
+Stashing takes the Temporary stored state of your working directory.
+# git stash save "<message>" ------> to store the data into stash
+# git stash list ------> to see the stash list
+# git stash apply <stash#> ------> to copy the data into branches
+# git stash pop <stash#> ------> to move the data into branches
+# git stash drop <stash#> ------> to delete the particular stash
+# git stash clear ------> delete the entire stash list
+
+When we use git Stash?
+- If you are checking out from one branch to another branch but you have uncommitted file that you don't want to move then keep that file in stash area.
+- When you are merging two branches and you don't want some files to merge, then we move that files to stash area.
+- When you are pulling (fetch + merge) a branch/file and you don't want some files to merge, then we move that files to stash area.
+
+How do you undo the last commit?
+# git revert <commit_id>
+
+---
+
+## Git Parameters:
+
+<!-- TODO -->
+
+*** Mostra la cronologia e lo stato ***
+
+      bisect     Use binary search to find the commit that introduced a bug
+      grep       Print lines matching a pattern
+      log        Mostra i commit log
+      status     stato del contenuto di un progetto
+      show       Show various types of objects
+   
+*** Grow, mark and tweak your common history ***
+
+      branch     Visualizza, crea e elimina ramo (branches)
+      checkout   Cambia ramo (branches) o ripristina la strotura dell'area di lavoro 
+      commit     Registra le modifiche del repository
+      diff       Confronta i commit (esp: commit e area di lovoro)
+      merge      Unisce una o più cronologie di sviluppo
+      rebase     Reapply commits on top of another base tip
+      tag        Crea, visualizza la lista, elimina o verifica il tag della versione del progetto
+
+<!-- Cosa fa `git add -i`? Utilizza l'aggiunta interattiva. -->
+<!-- git bisect: trova il commit che ha introdotto un bug usando la ricerca binaria. -->
+<!-- git reset to get back to a previous commit. -->
+
+<img src="./img/git_cheat_sheet.jpg" alt="Comandi principali di Git" title="Comandi principali di Git" width="30%" style="display:block; margin-left:auto; margin-right:auto; float:left; padding: 5%;">
+
 # Riassunto  
 
 <!-- Elencare qui quindi le azioni da fare per instanziare un progetto in Git. -->
@@ -465,15 +595,14 @@ git config --global --add safe.directory /storage/emulated/0/Download/uni
 
 # Bibliografia
 
-- [Learn Git Branching](https://learngitbranching.js.org/?locale=it_IT);
-- [tesseslol, guida git](https://gist.github.com/tesseslol/da62aabec74c4fed889ea39c95efc6cc);
-- [Pro Git - Scott Chacon, Ben Straub](https://git-scm.com/book/it/v2);
+- **[Pro Git - Scott Chacon, Ben Straub](https://git-scm.com/book/it/v2)**;
+- **[Introduction to Git in VS Code](https://code.visualstudio.com/docs/sourcecontrol/intro-to-git)**;
 - [Edoardo Midali](https://www.youtube.com/watch?v=wPAE9-DdMtI);
-- [Using Git source control in VS Code](https://code.visualstudio.com/docs/sourcecontrol/overview);
-- [Introduction to Git in VS Code](https://code.visualstudio.com/docs/sourcecontrol/intro-to-git);
+- [tesseslol, guida git](https://gist.github.com/tesseslol/da62aabec74c4fed889ea39c95efc6cc);
 - [Version control in VS Code](https://code.visualstudio.com/docs/introvideos/versioncontrol);
 - [Working with GitHub in VS Code](https://code.visualstudio.com/docs/sourcecontrol/github);
-- [git - la guida tascabile](https://rogerdudler.github.io/git-guide/index.it.html).
+- [git - la guida tascabile](https://rogerdudler.github.io/git-guide/index.it.html);
+- [git cheat sheet](https://rogerdudler.github.io/git-guide/files/git_cheat_sheet.pdf).
 
 <!-- Nel libro ProGit sono arrivato a pagina 45 -->  
 https://www.instagram.com/p/C_K4qfnI2Ga/?igsh=MW0ya3kyZnMwbGJsdA==
