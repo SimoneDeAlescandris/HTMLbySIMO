@@ -19,14 +19,16 @@
   - [rm](#rm)
   - [mv](#mv)
   - [help](#help)
+  - [rebase](#rebase)
 - [Connect to a `remote` server](#connect-to-a-remote-server)
   - [remote](#remote)
   - [clone](#clone)
   - [push](#push)
   - [pull](pull)
   - [fetch](#fetch)
+- [Alias in Git](#alias-in-git)
+- [Git Branching](#git-branching)
   - [merge](#merge)
-  - [rebase](#rebase)
 - [Riassunto](#riassunto)
 - [Bibliografia](#bibliografia)
 
@@ -307,6 +309,34 @@ git config --global credential.helper osxkeychain  # Salva in modo permanente su
   man git-<comando>
   ```  
 
+- **<span id="rebase" style="font-size: 16px;">`git rebase`</span>** **sposta i commit del branch corrente** su un nuovo punto della storia, riscrivendo la cronologia dei commit, per pulirla ed ottimizzarla. Invece di unire i branch con un commit di merge, li “rigioca” come se fossero stati creati dopo l’ultimo commit del branch di destinazione. Il risultato è una cronologia **più lineare, leggibile e pulita**.  
+  *Esempio concreto*: supponiamo che tu stia lavorando nel branch `feature`, ma nel frattempo qualcuno ha aggiornato `master`. Se fai `merge`, otterrai un commit extra che indica il merge. Se fai `rebase`, i tuoi commit verranno spostati sopra `master` e sembrerà che tu abbia lavorato su una base aggiornata fin dall’inizio.  
+  ```powershell  
+  git rebase master                           # SPOSTA i commit del branch attuale sopra l'ultimo commit di master
+  git rebase -i HEAD~3                        # APRE un'interfaccia interattiva per modificare, unire, riordinare gli ultimi 3 commit
+  git rebase origin/main                      # RIGIOCA i tuoi commit sopra l’ultimo stato remoto di main
+  git pull --rebase                           # Fa pull ma invece di merge applica rebase, per una cronologia più pulita
+  git rebase --onto main featureA featureB    # Applica i commit di featureB (che derivano da featureA) su main, escludendo featureA
+  git rebase --continue                       # Dopo aver risolto un conflitto, continua il rebase
+  git rebase --abort                          # ANNULLA COMPLETAMENTE IL rebase E TORNA ALLO STATO PRIMA DEL COMANDO
+  git rebase --skip                           # Salta un commit che ha causato conflitti durante il rebase
+  ```  
+  Le opzioni più usate sono `-i` per fare pulizia dei commit locali (modificare messaggi, unirli, ecc.), `--continue` per proseguire dopo un conflitto, e `--abort` per tornare indietro in caso di errori. `--onto` è più avanzata ma potente per cambiare completamente la base di uno o più commit.  
+  Il rebase è molto utile **prima di fare push**, ma non va usato su branch già condivisi con altri, perché **riscrive la cronologia** e può creare conflitti nei repository remoti.  
+  ***Esempio concreto*** di come correggere i messaggi, unire o riorganizzare i tuoi commit locali e poi aggiornare il remoto (se sei l’unico a lavorarci):  
+  1. Scegli i commit da rivedere, ad esempio gli ultimi 4: `git rebase -i HEAD~4`.  
+  2. Nell’editor che si apre, vedrai una lista simile a:
+      ```powershell  
+      pick a1b2c3f Messaggio primo commit
+      pick d4e5f6a Messaggio secondo commit
+      pick 1234abc Messaggio terzo commit
+      pick 7890def Messaggio quarto commit
+      ```  
+      - Sostituisci `pick` con `reword` per cambiare il messaggio.  
+      - Usa `squash` (o `s`) per unire quel commit con il precedente.  
+  3. Salva ed esci; Git ti guiderà nel riscrivere i messaggi o risolvere conflitti. In particolare, se hai modificato un solo file e ti interessano solo le sue modifiche: copiale ed incollale; fai un `git add <file>`; poi per due volte `git rebase --continue` per confermare tutte le operazioni.  
+  4. Alla fine avrai una serie di nuovi commit con nuovi hash. Per applicare queste modifiche al remoto usa `git push --force`.  
+
 # Connect to a `remote` server  
 
 Come [accennato prima](#distinzione-tra-git-e-github), per collaborare a qualsiasi progetto necessitiamo di piattaforme di hosting dei repository, come GitHub. I **repository remoti** sono quindi versioni del progetto ospitate da queste piattafome.  
@@ -392,131 +422,357 @@ Nei remoti si possono eseguire comandi come:
 
 - **<span id="fetch">`git fetch`</span>**: scarica gli oggetti dal remoto ma **NON** li unisce nel branch attuale.  
   ```powershell
-  git fetch                       # Scarica tutti i branch remoti e gli aggiornamenti
-  git fetch origin                # Scarica solo dal remoto `origin`
-  git fetch origin nome-branch    # Scarica un branch specifico
-  git fetch --all                 # Scarica da tutti i remoti configurati
+  git fetch                         # Scarica tutti i branch remoti e gli aggiornamenti
+  git fetch origin                  # Scarica solo dal remoto `origin`
+  git fetch origin <nome-branch>    # Scarica un branch specifico
+  git fetch --all                   # Scarica da tutti i remoti configurati
   ```  
 
-- **<span id="merge">`git merge`</span>**: unisce un branch (o commit) nel branch corrente.  
-  ```powershell  
-  git merge <branch>            # Unisce il branch indicato nel branch attuale
-  git merge --no-ff             # Forza la creazione di un commit di merge anche se è possibile un fast-forward
-  git merge --abort             # Annulla un merge in corso in caso di conflitti
-  git merge --squash <branch>   # Combina tutte le modifiche in un unico commit (non automatico)
-  ```  
+# **Alias** in Git  
 
-- **<span id="rebase" style="font-size: 16px;">`git rebase`</span>** **sposta i commit del branch corrente** su un nuovo punto della storia, riscrivendo la cronologia dei commit. Invece di unire i branch con un commit di merge, li “rigioca” come se fossero stati creati dopo l’ultimo commit del branch di destinazione. Il risultato è una cronologia **più lineare, leggibile e pulita**.  
-  *Esempio concreto*: supponiamo che tu stia lavorando nel branch `feature`, ma nel frattempo qualcuno ha aggiornato `master`. Se fai `merge`, otterrai un commit extra che indica il merge. Se fai `rebase`, i tuoi commit verranno spostati sopra `master` e sembrerà che tu abbia lavorato su una base aggiornata fin dall’inizio.  
-  ```powershell  
-  git rebase master                           # SPOSTA i commit del branch attuale sopra l'ultimo commit di master
-  git rebase -i HEAD~3                        # APRE un'interfaccia interattiva per modificare, unire, riordinare gli ultimi 3 commit
-  git rebase origin/main                      # RIGIOCA i tuoi commit sopra l’ultimo stato remoto di main
-  git pull --rebase                           # Fa pull ma invece di merge applica rebase, per una cronologia più pulita
-  git rebase --onto main featureA featureB    # Applica i commit di featureB (che derivano da featureA) su main, escludendo featureA
-  git rebase --continue                       # Dopo aver risolto un conflitto, continua il rebase
-  git rebase --abort                          # ANNULLA COMPLETAMENTE IL rebase E TORNA ALLO STATO PRIMA DEL COMANDO
-  git rebase --skip                           # Salta un commit che ha causato conflitti durante il rebase
-  ```  
-  Le opzioni più usate sono `-i` per fare pulizia dei commit locali (modificare messaggi, unirli, ecc.), `--continue` per proseguire dopo un conflitto, e `--abort` per tornare indietro in caso di errori. `--onto` è più avanzata ma potente per cambiare completamente la base di uno o più commit.  
-  Il rebase è molto utile **prima di fare push**, ma non va usato su branch già condivisi con altri, perché **riscrive la cronologia** e può creare conflitti nei repository remoti.  
-  ***Esempio concreto*** di come correggere i messaggi, unire o riorganizzare i tuoi commit locali e poi aggiornare il remoto (se sei l’unico a lavorarci):  
-  1. Scegli i commit da rivedere, ad esempio gli ultimi 4: `git rebase -i HEAD~4`.  
-  2. Nell’editor che si apre, vedrai una lista simile a:
-      ```powershell  
-      pick a1b2c3f Messaggio primo commit
-      pick d4e5f6a Messaggio secondo commit
-      pick 1234abc Messaggio terzo commit
-      pick 7890def Messaggio quarto commit
-      ```  
-      - Sostituisci `pick` con `reword` per cambiare il messaggio.  
-      - Usa `squash` (o `s`) per unire quel commit con il precedente.  
-  3. Salva ed esci; Git ti guiderà nel riscrivere i messaggi o risolvere conflitti. In particolare, se hai modificato un solo file e ti interessano solo le sue modifiche: copiale ed incollale; fai un `git add <file>`; poi per due volte `git rebase --continue` per confermare tutte le operazioni.  
-  4. Alla fine avrai una serie di nuovi commit con nuovi hash. Per applicare queste modifiche al remoto usa `git push --force`.  
+Gli alias in Git permettono di abbreviare i comandi più utilizzati, rendendo il lavoro più rapido ed efficiente. Invece di digitare l'intero comando, puoi configurare una scorciatoia personalizzata. Gli alias non modificano il comportamento di Git, ma semplicemente sostituiscono il comando originale con quello abbreviato. 
 
-# Git Aliases
-
-Gli alias in Git permettono di abbreviare i comandi più utilizzati, rendendo il lavoro più rapido ed efficiente. Invece di digitare l'intero comando, puoi configurare una scorciatoia personalizzata. Gli alias non modificano il comportamento di Git, ma semplicemente sostituiscono il comando originale con quello abbreviato.
-
-```powershell
+```powershell  
 git config --global alias.unstage 'reset HEAD --'
 git unstage <file>    # Equivalente a `git reset HEAD <file>`
-```
-```powershell
+``` 
+```powershell 
 git config --global alias.last 'log -1 HEAD'
 git last
-```
+``` 
+```powershell 
+git config --global --unset alias.<nome_alias>    # Per eliminare un alias
+``` 
 
-As you can tell, Git simply replaces the new command with whatever you alias it for. However, maybe you want to run an external command, rather than a Git subcommand. In that case, you start the command with a ! character. This is useful if you write your own tools that work with a Git repository. We can demonstrate by aliasing git visual to run gitk:
+# Git Branching 
 
-```powershell
-git config --global alias.visual "!gitk"
-```
+I **branch** (rami) in Git sono fondamentali per gestire lo sviluppo parallelo di un progetto. Ogni branch rappresenta una linea di sviluppo indipendente, permettendo di lavorare su nuove funzionalità, correzioni di bug o esperimenti senza influenzare il codice principale.  
+Il branch `master` (o `main`) è quello di default quando crei un repository.  
 
-How to Create Alias to git commands
-# git config --global alias.lo "log --oneline" -----> To create an Alias to Command
-# git config --global --unset alias.lo -----> To Remove an Alias
-# git config --global --unset user.name -----> to remove username
+```powershell 
+git branch                      # ELENCA i branch locali
+git branch -r                   # ELENCA i branch remoti
+git branch -v                   # ELENCA gli ultimi commit di ogni branch
+git branch <nome-branch>        # CREA un nuovo branch
+git checkout <nome_branch>      # PASSA ad un branch esistente
+git checkout -b <nome_branch>   # CREA e PASSA ad un branch in unico comando
+git branch -d <nome_branch>     # ELIMINA un branch
+```  
 
-# Git Branching
+- **<span id="merge">`git merge`</span>**: unisce un branch nel branch corrente. Puoi usare altri branch per lo sviluppo ed infine incorporarli nel branch principale una volta completati.    
+  ```powershell  
+  git checkout master
+  git merge <nome_branch>
+  ```
+  ```powershell  
+  git merge --no-ff                   # Forza la creazione di un commit di merge anche se è possibile un fast-forward
+  git merge --abort                   # ANNULLA un merge in corso in caso di conflitti
+  git merge --squash <nome-branch>    # Combina tutte le modifiche in un unico commit (non automatico)
+  ```  
 
-<!-- TODO -->
+<img src="./img/M_Branch.png" alt="Rappresentazione del workflow di un progetto che utilizza diversi branch" title="Workflow su Git con i Branch" width="30%" style="display:block; margin-left:auto; margin-right:auto; padding: 1%;">
 
-I branch ('ramificazioni') sono utilizzati per sviluppare features che sono isolate l'una dall'altra. II branch master è quello di default quando crei un repository. Puoi usare altri branch per lo sviluppo ed infine incorporarli ('merge') nel master branch una volta completati.
+I branch a lunga durata sono utili per gestire diverse fasi del ciclo di sviluppo. Una buona strategia può essere:  
+1. **`master`** (o **`main`**): contiene solo codice stabile, pronto per il rilascio e contrassegnato da un [tag annotato](#tag).  
+2. **`develop`**: branch parallelo utilizzato per testare nuove funzionalità o integrare branch secondari ([topic branches](#topic-branches)). Non sempre è stabile, ma quando lo diventa, viene unito a `master`.  
 
-crea un nuovo branch chiamato "feature_x" e passa al nuovo branch usando `git checkout -b feature_x`
-ritorna di nuovo su master `git checkout master`
-e cancella il branch creato precedenza `git branch -d feature_x`
-il branch non sarà disponibile agli altri fino a quando non verrà inviato al repository remoto `git push origin <branch>`
+Questo tipo di workflow ha il vantaggio di mantenere una chiara separazione tra codice stabile e codice in sviluppo, facilitano l'integrazione di modifiche da branch secondari.  
 
-<img src="./img/M_Branch.png" alt="Rappresentazione del workflow di un progetto che utilizza diversi branch" title="Workflow su Git con i Branch" width="50%" style="display:block; margin-left:auto; margin-right:auto;">
+Ad **<span style="color: #529E72;">esempio</span>**, immagina un progetto con i seguenti branch:  
+- `master`: contiene solo versioni stabili.  
+- `develop`: raccoglie modifiche da branch secondari come `feature/login` o `bugfix/issue-123`.  
+  Quando una funzionalità o un bug fix è pronto, viene testato e unito a `develop`. Una volta che `develop` è stabile, viene unito a `master`.
 
-## Cos'è git?
-I repository online e locali possono essere divisi in ramificazioni (Branch). 
-I branch (ramificazioni) permettono di creare delle versioni assestanti del codice master. Queste versioni "assestanti" permettono la creazione di features o aggiornamenti in fase alpha che non vanno ad intaccare minimamente il codice del progetto. Finito la scrittura della ramificazione il branch verrà unito con il master <br>
+# Workflow dei Branch in Git
 
-## Gestire i Branch
-Lista dei Rami:
+## **Branch Tematici (Topic Branches)**
 
-      git branch
-Creiamo un branch con:
-      
-      git branch nomeBranch
-      Esempio: git branch feature
-Cambia i rami:
+I branch tematici sono branch a breve durata creati per lavorare su una singola funzionalità o correzione. Sono ideali per:
+- Separare il lavoro in corso da altre modifiche.
+- Facilitare il code review e la collaborazione.
 
-      git checkout nomeBranch
-      Esempio: git checkout feature
-Per ritornare al branch originale digitiamo:
+### Vantaggi:
+- Consentono di passare rapidamente da un'attività all'altra.
+- Rendono più semplice tracciare e gestire le modifiche.
 
-      git checkout master
-Eliminare il ramo:
-      
-      git branch -d nomeBranch
-      Esempio: git branch -d feature
-Crea il ramo e passa a quel branch:
-
-      git checkout -b nomeBranch
-      Esempio: git checkout -b feature
-Per unire il branch al repository originale usiamo (ricordatevi di fare un commit nel branch):
-      
-      git checkout master
-      git merge feature
+### Esempio:
+1. Crei un branch per una nuova funzionalità:
+   ```bash
+   git checkout -b feature/login
+   ```
+2. Lavori sul branch e fai commit:
+   ```bash
+   git add .
+   git commit -m "Aggiunta funzionalità di login"
+   ```
+3. Una volta completato, unisci il branch a `develop`:
+   ```bash
+   git checkout develop
+   git merge feature/login
+   ```
+4. Elimini il branch locale:
+   ```bash
+   git branch -d feature/login
+   ```
 
 ---
 
-Describe branching strategy you have used?
+## **Branch Remoti**
 
-Feature branching
-A feature branch model keeps all of the changes for a particular feature inside of a branch. When the feature is fully tested and validated by automated tests, the branch is then merged into master.
+I branch remoti rappresentano lo stato dei branch su un repository remoto. Non possono essere modificati direttamente, ma vengono aggiornati automaticamente durante la comunicazione con il server remoto.
 
-Task branching
-In this model each task is implemented on its own branch with the task key included in the branch name It is easy to see which code implements which task, just look for the task key in the branch name.
+### Esempio:
+- **`origin/master`**: rappresenta il branch `master` sul remoto.
+- **`origin/feature/login`**: rappresenta il branch `feature/login` sul remoto.
 
-Release branching
-Once the develop branch has acquired enough features for a release, you can clone that branch to form a Release branch. Creating this branch starts the next release cycle, so no new features can be added after this point, only bug fixes, documentation generation, and other release-oriented tasks should go in this branch. Once it is ready to ship, the release gets merged into master and tagged with a version number. In addition, it should be merged back into develop branch, which may have progressed since the release was initiated.
+Per sincronizzare il tuo repository locale con il remoto:
+1. **Fetch**: scarica gli aggiornamenti senza unirli:
+   ```bash
+   git fetch origin
+   ```
+2. **Merge**: unisci le modifiche al tuo branch corrente:
+   ```bash
+   git merge origin/master
+   ```
+3. **Checkout di un branch remoto**: crea un branch locale basato su un branch remoto:
+   ```bash
+   git checkout -b feature/login origin/feature/login
+   ```
 
 ---
+
+## **Push dei Branch**
+
+Per condividere un branch con altri, devi eseguire un push verso il repository remoto:
+```bash
+git push origin <nome-branch>
+```
+
+### Esempio:
+1. Crei un branch locale:
+   ```bash
+   git checkout -b serverfix
+   ```
+2. Fai delle modifiche e le committi:
+   ```bash
+   git add .
+   git commit -m "Fix del server"
+   ```
+3. Esegui il push del branch verso il remoto:
+   ```bash
+   git push origin serverfix
+   ```
+
+Se vuoi rinominare il branch remoto durante il push:
+```bash
+git push origin serverfix:nuovo-nome
+```
+
+---
+
+## **Nota sui Branch Privati**
+I branch locali non vengono sincronizzati automaticamente con il remoto. Questo ti permette di mantenere branch privati per lavoro personale e condividere solo quelli necessari.
+
+---
+
+## **Caching delle Credenziali**
+Se utilizzi un URL HTTPS per il push, Git ti chiederà username e password. Per evitare di inserirli ogni volta, puoi configurare una cache delle credenziali:
+```bash
+git config --global credential.helper cache
+```
+
+---
+
+## **Conclusione**
+I branch in Git offrono flessibilità e controllo sullo sviluppo del progetto. Scegliere il workflow giusto dipende dalle esigenze del team e dalla complessità del progetto. Utilizza branch a lunga durata per gestire la stabilità del codice e branch tematici per lavorare su funzionalità specifiche.
+
+Se hai bisogno di ulteriori chiarimenti o esempi, fammi sapere!
+
+# Branching Workflows
+
+Now that you have the basics of branching and merging down, what can or should you do with them? In this section, we’ll cover some common workflows that this lightweight branching makes possible, so you can decide if you would like to incorporate it into your own development cycle.
+
+## Long-Running Branches
+
+Because Git uses a simple three-way merge, merging from one branch into another multiple times over a long period is generally easy to do. This means you can have several branches that are always open and that you use for different stages of your development cycle; you can merge regularly from some of them into others.
+
+Many Git developers have a workflow that embraces this approach, such as having only code that is entirely stable in their master branch – possibly only code that has been or will be released. They have another parallel branch named develop or next that they work from or use to test stability – it isn’t necessarily always stable, but whenever it gets to a stable state, it can be merged into master. It’s used to pull in topic branches (short-lived branches, like your earlier iss53 branch) when they’re ready, to make sure they pass all the tests and don’t introduce bugs.
+
+In reality, we’re talking about pointers moving up the line of commits you’re making. The stable branches are farther down the line in your commit history, and the bleeding-edge branches are farther up the history.
+
+It’s generally easier to think about them as work silos, where sets of commits graduate to a more stable silo when they’re fully tested.
+
+You can keep doing this for several levels of stability. Some larger projects also have a proposed or pu (proposed updates) branch that has integrated branches that may not be ready to go into the next or master branch. The idea is that your branches are at various levels of stability; when they reach a more stable level, they’re merged into the branch above them. Again, having multiple long-running branches isn’t necessary, but it’s often helpful, especially when you’re dealing with very large or complex projects.
+
+## Topic Branches
+
+Topic branches, however, are useful in projects of any size. A topic branch is a short-
+lived branch that you create and use for a single particular feature or related work.
+This is something you’ve likely never done with a VCS before because it’s generally too
+expensive to create and merge branches. But in Git it’s common to create, work on,
+merge, and delete branches several times a day.
+
+You saw this in the last section with the iss53 and hotfix branches you created. You
+did a few commits on them and deleted them directly after merging them into your
+main branch. This technique allows you to context-switch quickly and completely –
+because your work is separated into silos where all the changes in that branch have to
+do with that topic, it’s easier to see what has happened during code review and such.
+You can keep the changes there for minutes, days, or months, and merge them in when
+they’re ready, regardless of the order in which they were created or worked on.
+
+Consider an example of doing some work (on master), branching off for an issue (iss91),
+working on it for a bit, branching off the second branch to try another way of
+handling the same thing (iss91v2), going back to your master branch and working there
+for a while, and then branching off there to do some work that you’re not sure is a
+good idea (dumbidea branch). Your commit history will look something like this:
+
+Now, let’s say you decide you like the second solution to your issue best (iss91v2); and
+you showed the dumbidea branch to your coworkers, and it turns out to be genius. You
+can throw away the original iss91 branch (losing commits C5 and C6) and merge in the
+other two. Your history then looks like this:
+
+We will go into more detail about the various possible workflows for your Git
+project in Distributed Git, so before you decide which branching scheme your next
+project will use, be sure to read that chapter.
+
+It’s important to remember when you’re doing all this that these branches are
+completely local. When you’re branching and merging, everything is being done only in
+your Git repository – no server communication is happening.
+
+## Remote Branches
+Remote branches are references (pointers) to the state of branches in your remote repositories. They’re local branches that you can’t move; they’re moved automatically for you whenever you do any network communication. Remote branches act as bookmarks
+to remind you where the branches on your remote repositories were the last time you
+connected to them.
+
+They take the form (remote)/(branch). For instance, if you wanted to see what the
+master branch on your origin remote looked like as of the last time you communicated
+with it, you would check the origin/master branch. If you were working on an issue
+with a partner and they pushed up an iss53 branch, you might have your own local
+iss53 branch; but the branch on the server would point to the commit at origin/iss53.
+
+This may be a bit confusing, so let’s look at an example. Let’s say you have a Git
+server on your network at git.ourcompany.com. If you clone from this, Git’s clone
+command automatically names it origin for you, pulls down all its data, creates a
+pointer to where its master branch is, and names it origin/master locally. Git also
+gives you your own local master branch starting at the same place as origin’s master
+branch, so you have something to work from.
+
+NOTA: “origin” is not special
+Just like the branch name “master” does not have any special meaning in
+Git, neither does “origin”. While “master” is the default name for a
+starting branch when you run git init which is the only reason it’s
+widely used, “origin” is the default name for a remote when you run git
+clone. If you run git clone -o booyah instead, then you will have
+booyah/master as your default remote branch.
+
+If you do some work on your local master branch, and, in the meantime, someone else
+pushes to git.ourcompany.com and updates its master branch, then your histories move
+forward differently. Also, as long as you stay out of contact with your origin server,
+your origin/master pointer doesn’t move
+
+To synchronize your work, you run a git  fetch  origin command. This command looks
+up which server “origin” is (in this case, it’s git.ourcompany.com), fetches any data from
+it that you don’t yet have, and updates your local database, moving your origin/master
+pointer to its new, more up-to-date position
+
+To demonstrate having multiple remote servers and what remote branches for those
+remote projects look like, let’s assume you have another internal Git server that is
+used only for development by one of your sprint teams. This server is at
+git.team1.ourcompany.com. You can add it as a new remote reference to the project you’re
+currently working on by running the git  remote  add command as we covered in Git
+Basics. Name this remote teamone, which will be your shortname for that whole URL.
+
+Now, you can run git  fetch  teamone to fetch everything the remote teamone server has
+that you don’t have yet. Because that server has a subset of the data your origin
+server has right now, Git fetches no data but sets a remote branch called
+teamone/master to point to the commit that teamone has as its master branch. 
+
+## Pushing
+
+When you want to share a branch with the world, you need to push it up to a
+remote that you have write access to. Your local branches aren’t automatically
+synchronized to the remotes you write to – you have to explicitly push the branches
+you want to share. That way, you can use private branches for work you don’t want to
+share, and push up only the topic branches you want to collaborate on.
+
+If you have a branch named serverfix that you want to work on with others, you can
+push it up the same way you pushed your first branch. Run git push (remote) (branch):
+```
+$ git push origin serverfix
+Counting objects: 24, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (15/15), done.
+Writing objects: 100% (24/24), 1.91 KiB | 0 bytes/s, done.
+Total 24 (delta 2), reused 0 (delta 0)
+To https://github.com/schacon/simplegit
+ * [new branch]      serverfix -> serverfix
+```
+
+This is a bit of a shortcut. Git automatically expands the serverfix branchname out
+to refs/heads/serverfix:refs/heads/serverfix, which means, “Take my serverfix local branch
+and push it to update the remote’s serverfix branch.” We’ll go over the refs/heads/ part
+in detail in Git Internals, but you can generally leave it off. You can also do git
+push  origin  serverfix:serverfix, which does the same thing – it says, “Take my serverfix
+and make it the remote’s serverfix.” You can use this format to push a local branch
+into a remote branch that is named differently. If you didn’t want it to be called
+serverfix on the remote, you could instead run git  push  origin  serverfix:awesomebranch to
+push your local serverfix branch to the awesomebranch branch on the remote project.
+
+[NOTA: Don’t type your password every time
+If you’re using an HTTPS URL to push over, the Git server will ask
+you for your username and password for authentication. By default it will
+prompt you on the terminal for this information so the server can tell if
+you’re allowed to push.
+
+If you don’t want to type it every single time you push, you can set up
+a “credential cache”. The simplest is just to keep it in memory for a few
+mintues, which you can easily set up by running git config --global
+credential.helper cache.
+
+For more information on the various credential caching options available,
+see Credential Storage.]
+
+The next time one of your collaborators fetches from the server, they will get a
+reference to where the server’s version of serverfix is under the remote branch
+origin/serverfix:
+
+```
+$ git fetch origin
+remote: Counting objects: 7, done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 0), reused 3 (delta 0)
+Unpacking objects: 100% (3/3), done.
+From https://github.com/schacon/simplegit
+ * [new branch]      serverfix    -> origin/serverfix
+```
+
+It’s important to note that when you do a fetch that brings down new remote branches,
+you don’t automatically have local, editable copies of them. In other words, in this case,
+you don’t have a new serverfix branch – you only have an origin/serverfix pointer
+that you can’t modify.
+
+To merge this work into your current working branch, you can run git merge
+origin/serverfix. If you want your own serverfix branch that you can work on, you
+can base it off your remote branch:
+
+```
+$ git checkout -b serverfix origin/serverfix
+Branch serverfix set up to track remote branch serverfix from origin.
+Switched to a new branch 'serverfix'
+```
+
+This gives you a local branch that you can work on that starts where origin/serverfix is.
+
+---
+
+Reflog
+Utilizzo di `git reflog` per recuperare commit persi o annullare errori.
+1. Reset, Revert e Restore
+Differenze tra `git reset`, `git revert` e `git restore`.
+Quando e come usarli per modificare la cronologia o ripristinare file.
+1. Stash Avanzato
+Utilizzo di `git stash` con opzioni avanzate, come `--include-untracked` o `--patch`.
+Applicazione selettiva di stashes.
 
 What is git stash?
 Stashing takes the Temporary stored state of your working directory.
@@ -595,7 +851,7 @@ git config --global --add safe.directory /storage/emulated/0/Download/uni
 
 # Bibliografia
 
-- **[Pro Git - Scott Chacon, Ben Straub](https://git-scm.com/book/it/v2)**;
+- **[Pro Git - Scott Chacon, Ben Straub (until pag. 91)](https://git-scm.com/book/it/v2)**;
 - **[Introduction to Git in VS Code](https://code.visualstudio.com/docs/sourcecontrol/intro-to-git)**;
 - [Edoardo Midali](https://www.youtube.com/watch?v=wPAE9-DdMtI);
 - [tesseslol, guida git](https://gist.github.com/tesseslol/da62aabec74c4fed889ea39c95efc6cc);
