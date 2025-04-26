@@ -38,7 +38,7 @@
 
 <!-- Completare Indice -->
 
-<img src="./img/6_git.png" alt="Logo Git" title="Logo Git" width="34px" style="float:left; margin-right:12px;">
+<img src="./img/git/1_git.png" alt="Logo Git" title="Logo Git" width="34px" style="float:left; margin-right:12px;">
 
 # Introduzione
 
@@ -69,7 +69,7 @@ Questi stati si collegano a tre concetti fondamentali:
 
 Se una particolare versione di un file è presente nella directory Git, è considerata **committata** (*committed*). Se il file è stato modificato e aggiunto all’area di stage, è **in stage** (*staged*). Se il file è stato modificato, da quando è stato estratto, ma non ancora aggiunto all’area di stage, è semplicemente **modificato** (*modified*).  
 
-<img src="./img/7_areas.png" alt="Rappresentazione dei tre stati possibili in Git" title="Rappresentazione dei tre stati possibili in Git" width="50%" style="display:block; margin-left:auto; margin-right:auto;">
+<img src="./img/git/2_areas.png" alt="Rappresentazione dei tre stati possibili in Git" title="Rappresentazione dei tre stati possibili in Git" width="50%" style="display:block; margin-left:auto; margin-right:auto;">
 
 ## Distinzione tra Git e GitHub
 
@@ -144,7 +144,7 @@ git config --global credential.helper osxkeychain  # Salva in modo permanente su
 	?? LICENSE.txt		  # ?? : file nuovo, non tracciato
 	```
 
-  <img src="./img/8_lifecycle.png" alt="Tutti i possibili stati di un file: Untracked; Unmodified; Modified; Staged." title="Tutti i possibili stati di un file" width="70%" style="display:block; margin-left:auto; margin-right:auto;">
+  <img src="./img/git/3_lifecycle.png" alt="Tutti i possibili stati di un file: Untracked; Unmodified; Modified; Staged." title="Tutti i possibili stati di un file" width="70%" style="display:block; margin-left:auto; margin-right:auto;">
 
 - **<span id="diff" style="font-size: 16px;">`git diff`</span>**: se `status` fosse un po’ troppo vago per i tuoi standard e tu volessi sapere esattamente cosa è cambiato, questo comando mostra le differenze, riga per riga, tra i file modificati e l’ultima versione tracciata (HEAD o staging area). Serve per vedere *cosa* cambierà prima di committare.  
   ```powershell  
@@ -543,10 +543,10 @@ git branch -d <nome_branch>                           # ELIMINA un branch
   ```powershell  
   git merge --no-ff                   # Forza la creazione di un commit di merge anche se è possibile un fast-forward
   git merge --abort                   # ANNULLA un merge in corso in caso di conflitti
-  git merge --squash <nome-branch>    # Combina tutte le modifiche in un unico commit (non automatico)
+  git merge --squash <nome-branch>    # COMBINA TUTTE LE MODIFICHE DEL BRANCH E LE APPLICA COME MODIFICHE STAGED SUL BRANCH ATTUALE, POI TOCCA A TE FARE IL COMMIT FINALE
   ```  
 
-<img src="./img/M_Branch.png" alt="Rappresentazione del workflow di un progetto che utilizza diversi branch" title="Workflow su Git con i Branch" width="30%" style="display:block; margin-left:auto; margin-right:auto; padding: 1%;">
+<img src="./img/git/5_Branch.png" alt="Rappresentazione del workflow di un progetto che utilizza diversi branch" title="Workflow su Git con i Branch" width="30%" style="display:block; margin-left:auto; margin-right:auto; padding: 1%;">
 
 I **branch a lunga durata** sono utili per gestire diverse fasi del ciclo di sviluppo. Una buona strategia può essere:  
 1. **`master`** (o **`main`**): contiene solo codice stabile, pronto per il rilascio e contrassegnato da un [tag annotato](#tag).  
@@ -591,7 +591,7 @@ git config --global --add safe.directory /storage/emulated/0/Download/uni
 5. Allinearsi col remoto, nel caso lavorassimo da più di un device o condividessimo il progetto con altri sviluppatori, usando [`git pull <shortname> <nome-branch>`](#pull).   
 
 <details><summary>Comandi principali di Git</summary>  
-<img src="./img/git_cheat_sheet.jpg" alt="Comandi principali di Git" title="Comandi principali di Git" width="50%" style="display:block; margin-left:auto; margin-right:auto; padding: 1%;">  
+<img src="./img/git/4_git_cheat_sheet.jpg" alt="Comandi principali di Git" title="Comandi principali di Git" width="50%" style="display:block; margin-left:auto; margin-right:auto; padding: 1%;">  
 </details><br> 
 
 # Bibliografia

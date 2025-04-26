@@ -25,7 +25,7 @@
   - [Embed di Video](#embed-di-video)
 - [Bibliografia](#bibliografia)<br><br>
 
-<img src="./img/9_Markdown.png" alt="Logo Git" title="Logo Git" width="34px" style="float:left; margin-right:12px;">
+<img src="./img/md/1_Markdown.png" alt="Logo Git" title="Logo Git" width="34px" style="float:left; margin-right:12px;">
 
 # **Introduzione**
 
@@ -182,7 +182,7 @@ Markdown fornisce una sintassi più semplice rispetto all'HTML, pur venendo trad
   Es.: ``![Testo alternativo](URL "title")``.  
   Equiv. in HTML: `<img src="URL" alt="Testo alternativo" title="title">`.  
   Il titolo di un'immagine o link, non obbligatorio, è ciò che compare se lasciamo il mouse sull'immagine per qualche secondo. Per <abbr title="dimensione, posizione, effetti hover, filtri visivi, bordi o margini">modificare un'immagine</abbr> dobbiamo usare HTML o CSS e un editor che supporti quindi anche questi due linguaggi.  
-  <img src="./img/5_AOT.JPG" alt="meme in stile AOT con Fidaleo vs Brenti" width=35% style="position:relative; padding: 1%;" title="Fidaleo vs Brenti">
+  <img src="./img/md/2_AOT.JPG" alt="meme in stile AOT con Fidaleo vs Brenti" width=35% style="position:relative; padding: 1%;" title="Fidaleo vs Brenti">
 - **DIVISORI**: si fanno con tre trattini o underscore. Es. `---` o `___`.
 - **TABELLE**: supportate, ma tediose da scrivere. Di defualt il testo è allineato a sinistra.  Es.:
   ```markdown
