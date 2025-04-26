@@ -8,26 +8,30 @@
   - [init](#init)
   - [add](#add)
   - [status](#status)
-  - [diff](#diff)
+  - *[diff](#diff)*
   - [commit](#commit)
-  - [log](#log)
-  - [tag](#tag)
+  - *[log](#log)*
+  - **[tag](#tag)**
   - [show](#show)
   - [.gitignore](#.gitignore)
-  - [checkout](#checkout)
-  - [restore](#restore)
+  - ***[checkout](#checkout)***
+  - [reflog](#reflog)
+  - [reset](#reset) vs [revert](#revert) vs **[restore](#restore)**
   - [rm](#rm)
   - [mv](#mv)
+  - [stash](#stash)
+  - [bisect](#bisect)
+  - ***[grep](#grep)***
   - [help](#help)
-  - [rebase](#rebase)
-- [Connect to a `remote` server](#connect-to-a-remote-server)
+  - ***[rebase](#rebase)***
+- **[Connect to a `remote` server](#connect-to-a-remote-server)**
   - [remote](#remote)
   - [clone](#clone)
   - [push](#push)
   - [pull](pull)
   - [fetch](#fetch)
 - [Alias in Git](#alias-in-git)
-- [Git Branching](#git-branching)
+- **[Git Branching](#git-branching)**
   - [merge](#merge)
 - [Riassunto](#riassunto)
 - [Bibliografia](#bibliografia)
@@ -123,6 +127,7 @@ git config --global credential.helper osxkeychain  # Salva in modo permanente su
   git add README.py   # Aggiunge un singolo file specificato all'area di stage
   git add .           # Aggiunge tutti i file nella directory corrente e nelle subdirectory
   git add *.txt       # Aggiunge tutti i file con estensione .txt (o qualche essa sia) nella directory corrente
+  git add -i          # aggiunta INTERATTIVA (utile alle prime armi): selezioni, attraverso un'interfaccia testuale, file o hunk da mettere in stage.
   ```
 
 - **<span id="status" style="font-size: 16px;">`git status`</span>**: mostra informazioni dettagliate sullo stato dei file nel repository e determina quali file sono modificati (_modified_), tracciati (_tracked_) o non tracciati (_untracked_).
@@ -175,11 +180,14 @@ git config --global credential.helper osxkeychain  # Salva in modo permanente su
   git log
 	git log -n										# Mostra gli ultimi n commit.
 	git log --oneline  								# Mostra ogni commit su una singola riga, molto più compatto.
-  git log --graph --oneline 						# Aggiunge anche un piccolo grafico ad albero, utile per visualizzare i rami.
+  git log --graph 						# Aggiunge anche un piccolo grafico ad albero, utile per visualizzare i rami.
   git log -p 										# Mostra le modifiche effettive (diff) apportate da ogni commit.
   git log --stat                                  # Fornisce: un elenco dei file modificati; quante linee in quei file sono state aggiunge e rimosse; un riassunto delle informazioni.
   git log --shortstat                             # Come prima, ma con solo il riassunto delle informazioni.
+  git log --since="2 weeks ago"
+  git log --author="Simone"
   ```  
+
   L'output è simile a:  
   ```powershell  
   commit 3f9c1bfae3f2d7b123456789abcdef123456789			# È l'hash identificativo del commit, unico per ogni cambiamento.
@@ -214,9 +222,12 @@ git config --global credential.helper osxkeychain  # Salva in modo permanente su
 	git push --tags                       # IMPORTANTE: per inviare PIÙ tag assieme
 	```  
 
-- **<span id="show" style="font-size: 16px;">`git show`</span>**: mostra le informazioni salvate nel tag annotato e il commit a cui punta.  
+- **<span id="show" style="font-size: 16px;">`git show`</span>**: mostra o le informazioni salvate nel tag annotato e il commit a cui punta oppure visualizza dettagli di un commit o oggetto.  
   ```powershell
   git show v1.4
+  ```
+  ```powershell
+  git show HEAD~2                # Vedi cosa si fece nel commit di due posizioni fa
   ```
 
 - **<span id=".gitignore" style="font-size: 16px;">`.gitignore`</span>**: file di testo usato per dire a Git quali file o cartelle non tracciare. Si crea nella root del repository.  
@@ -266,15 +277,41 @@ git config --global credential.helper osxkeychain  # Salva in modo permanente su
   Se hai bisogno di entrambe le versioni del file, puoi aprire una nuova ramificazione (**Branch**).  
   <!-- RICORDARMI DI METTERE ANCHE QUI IL LINK DI QUANDO PARLERÒ del BRANCH. -->
 
-- **<span id="restore" style="font-size: 14px;">`git restore`</span>**: **ripristina** file nella working directory o nell’area di staging, scartando modifiche indesiderate senza alterare la cronologia del repository (quindi senza creare commit).  
-  ```powershell
-  git restore <file>                      # RIPRISTINA la versione nell’ultimo commit (HEAD) o dall'area di staging, ANNULLANDO le modifiche locali al file.
-  git restore --staged <file>             # RIMUOVE il file dall'area di staging, riportandolo nello stato di "modificato ma non in stage". È utile se hai aggiunto un file con `git add` ma ti sei accorto di aver sbagliato.
-  git restore --source <commit> <file>    # RIPRISTINA il file a una versione specifica indicata da un commit passato, senza influenzare altri file.
-  git restore --worktree <file>           # RIPRISTINA il file solo nella working directory, mantenendo invariata la versione in stage.
-  ```
-  Senza opzioni aggiuntive, `git restore` opera sulla **working directory**. Con `--staged`, opera sull'**area di staging**; usando entrambe le opzioni contemporaneamente, puoi ripristinare file in entrambi i luoghi con un solo comando.
-  **Attenzione**: `git restore` elimina le modifiche locali **senza chiedere conferma**, quindi è importante usarlo solo quando sei certo di voler scartare i cambiamenti.
+- **<span id="reflog" style="font-size: 14px;">`git reflog`</span>**: tiene traccia di **tutte** le modifiche al puntatore `HEAD`, inclusi `reset` e `rebase`, anche quando la cronologia "ufficiale" le ha cancellate. **Utile per recuperare commit "persi" o annullare errori**.  
+  ```powershell  
+  git reflog                      # Mostra l'elenco di tutti i movimenti di HEAD
+  git checkout HEAD@{3}           # Torna allo stato di HEAD tre mosse fa
+  git branch recupero HEAD@{3}    # Crea un branch da quel punto, per ispezionarlo
+  ```  
+
+- **`git reset` vs `git revert` vs `git restore`**: tre modi diversi per annullare modifiche, a livelli diversi:   
+  - **<span id="reset" style="font-size: 14px;">`reset`</span>** riscrive la cronologia locale, **non** crea nuovi commit.  
+    ```powershell  
+    git reset --soft <commit>       # Sposta HEAD a <commit>, mantiene le modifiche in stage
+    git reset --mixed <commit>      # (default) Sposta HEAD, mantiene le modifiche in working dir, svuota lo stage
+    git reset --hard <commit>       # Ripristina completamente HEAD, stage e working dir a <commit>
+    ```  
+
+  - **<span id="revert" style="font-size: 14px;">`revert`</span>** crea un nuovo commit che **inverte** le modifiche di un commit precedente, senza toccare la cronologia:
+    ```powershell
+    git revert <commit-id>          # Genera un commit "inverso" di <commit-id>
+    ```
+    In pratica permette di annullare le modifiche fatte nel commit precedente.
+
+  - **<span id="restore" style="font-size: 14px;">`git restore`</span>**: **ripristina** file nella working directory o nell’area di staging, scartando modifiche indesiderate senza alterare la cronologia del repository (quindi senza creare commit).  
+    ```powershell
+    git restore <file>                      # RIPRISTINA la versione nell’ultimo commit (HEAD) o dall'area di staging, ANNULLANDO le modifiche locali al file.
+    git restore --staged <file>             # RIMUOVE il file dallo stage, riportandolo nello stato di "modificato ma non in stage" (quindi mantiene le modifiche solo sul disco). Utile se hai aggiunto un file con `git add` ma ti sei accorto di aver sbagliato.
+    git restore --source <commit> <file>    # RIPRISTINA il file a una versione specifica indicata da un commit passato, senza influenzare altri file.
+    git restore --worktree <file>           # RIPRISTINA il file solo nella working directory, mantenendo invariata la versione in stage.
+    ```
+    Senza opzioni aggiuntive, `git restore` opera sulla **working directory**. Con `--staged`, opera sull'**area di staging**; usando entrambe le opzioni contemporaneamente, puoi ripristinare file in entrambi i luoghi con un solo comando.
+    **Attenzione**: `git restore` elimina le modifiche locali **senza chiedere conferma**, quindi è importante usarlo solo quando sei certo di voler scartare i cambiamenti.  
+
+  **Quando usarli**:  
+  - `reset` per correggere storia locale prima del push.  
+  - `revert` per annullare modifiche già pubblicate in un branch collaborativo.  
+  - `restore` per scartare modifiche di file specifici.
 
 - **<span id="rm" style="font-size: 16px;">`git rm`</span>**: rimuove file sia dalla working directory che dall’indice (staging area).  
   ```powershell  
@@ -302,6 +339,43 @@ git config --global credential.helper osxkeychain  # Salva in modo permanente su
 	git commit -m "Rinominato file"
   ```  
   
+- **<span id="stash" style="font-size: 14px;">`git stash`</span>**: metti da parte temporaneamente modifiche in working directory (e in stage) per passare a un’altra attività.  
+  ```powershell  
+  git stash push                 # Stasha solo modifiche tracciate
+  git stash push -u              # Include anche file non tracciati (--include-untracked)
+  git stash push -p              # Interattivo: scegli quali modifiche stashare (patch)
+  git stash list                 # Elenca stash correnti
+  git stash apply stash@{1}      # Applica lo stash senza rimuoverlo
+  git stash pop                  # Applica e rimuove l’ultimo stash
+  git stash drop stash@{2}       # Rimuove uno stash specifico
+  git stash clear                # Elimina tutti gli stash
+  ```  
+
+  **Perché**?  
+  - Passare a un branch pulito senza committare;  
+  - Salvare solo alcune modifiche con `-p`;  
+  - Ignorare file non tracciati con `-u`.  
+
+- **<span id="bisect" style="font-size: 14px;">`git bisect`</span>**: trova il commit che ha introdotto un bug usando la ricerca binaria.  
+  ```powershell  
+  git bisect start               # Avvia bisect
+  git bisect bad                 # Segnala lo stato attuale (difettoso)
+  git bisect good v2.0.0         # Segnala un commit noto buono
+  # Git testerà a metà tra good e bad
+  # Se è buono:
+  git bisect good
+  # Se è cattivo:
+  git bisect bad
+  # Continua finché non trovi il commit incriminato
+  git bisect reset               # Alla fine, torna al branch originario
+  ```  
+
+- **<span id="grep" style="font-size: 14px;">`git grep`</span>**: cerca una stringa nella cronologia di file:  
+  ```powershell  
+  git grep "pattern"           # Cerca "pattern" nei file tracciati
+  git grep -n "TODO" HEAD~5    # Cerca tra gli ultimi 5 commit, numerando righe
+  ```  
+
 - **<span id="help" style="font-size: 16px;">`git help`</span>**: per accedere alla documentazione dettagliata di ogni comando ci sono tre metodi principali:  
   ```powershell  
   git help <comando>
@@ -411,6 +485,7 @@ Nei remoti si possono eseguire comandi come:
   git push                            # INVIA le modifiche al branch remoto TRACCIATO
   git push --tags                     # Invia tutti i tag locali al repository remoto
   git push origin :nome-branch        # Elimina un branch remoto
+  git push origin serverfix:nuovo-nome    # RINOMINA il branch remoto durante il push
   ```  
 
 - **<span id="pull" style="font-size: 16px;">`git pull`</span>**: scarica e unisce in un colpo solo le modifiche dal remoto nel branch corrente.  
@@ -420,7 +495,7 @@ Nei remoti si possono eseguire comandi come:
   git pull origin <nome-branch>   # Preleva e unisce un branch remoto specifico
   ```  
 
-- **<span id="fetch">`git fetch`</span>**: scarica gli oggetti dal remoto ma **NON** li unisce nel branch attuale.  
+- **<span id="fetch">`git fetch`</span>**: scarica gli aggiornamenti dal remoto ma **NON** li unisce nel branch attuale.  
   ```powershell
   git fetch                         # Scarica tutti i branch remoti e gli aggiornamenti
   git fetch origin                  # Scarica solo dal remoto `origin`
@@ -450,13 +525,14 @@ I **branch** (rami) in Git sono fondamentali per gestire lo sviluppo parallelo d
 Il branch `master` (o `main`) è quello di default quando crei un repository.  
 
 ```powershell 
-git branch                      # ELENCA i branch locali
-git branch -r                   # ELENCA i branch remoti
-git branch -v                   # ELENCA gli ultimi commit di ogni branch
-git branch <nome-branch>        # CREA un nuovo branch
-git checkout <nome_branch>      # PASSA ad un branch esistente
-git checkout -b <nome_branch>   # CREA e PASSA ad un branch in unico comando
-git branch -d <nome_branch>     # ELIMINA un branch
+git branch                                            # ELENCA i branch locali
+git branch -r                                         # ELENCA i branch remoti
+git branch -v                                         # ELENCA gli ultimi commit di ogni branch
+git branch <nome-branch>                              # CREA un nuovo branch
+git checkout <nome_branch>                            # PASSA ad un branch esistente
+git checkout -b <nome_branch>                         # CREA e PASSA ad un branch in unico comando
+git checkout -b feature/login origin/feature/login    # CREA un branch locale basato su un branch remoto e ci PASSA in unico comando
+git branch -d <nome_branch>                           # ELIMINA un branch
 ```  
 
 - **<span id="merge">`git merge`</span>**: unisce un branch nel branch corrente. Puoi usare altri branch per lo sviluppo ed infine incorporarli nel branch principale una volta completati.    
@@ -472,354 +548,19 @@ git branch -d <nome_branch>     # ELIMINA un branch
 
 <img src="./img/M_Branch.png" alt="Rappresentazione del workflow di un progetto che utilizza diversi branch" title="Workflow su Git con i Branch" width="30%" style="display:block; margin-left:auto; margin-right:auto; padding: 1%;">
 
-I branch a lunga durata sono utili per gestire diverse fasi del ciclo di sviluppo. Una buona strategia può essere:  
+I **branch a lunga durata** sono utili per gestire diverse fasi del ciclo di sviluppo. Una buona strategia può essere:  
 1. **`master`** (o **`main`**): contiene solo codice stabile, pronto per il rilascio e contrassegnato da un [tag annotato](#tag).  
-2. **`develop`**: branch parallelo utilizzato per testare nuove funzionalità o integrare branch secondari ([topic branches](#topic-branches)). Non sempre è stabile, ma quando lo diventa, viene unito a `master`.  
+2. **`develop`**: branch parallelo utilizzato per testare nuove funzionalità o integrare <u>branch secondari</u>. Non sempre è stabile, ma quando lo diventa, viene unito a `master`.  
 
-Questo tipo di workflow ha il vantaggio di mantenere una chiara separazione tra codice stabile e codice in sviluppo, facilitano l'integrazione di modifiche da branch secondari.  
+I **branch secondari** sono branch a breve durata creati per lavorare su una singola funzionalità o correzione. Sono ideali per:  
+- Separare il lavoro in corso da altre modifiche.  
+- Facilitare il code review e la collaborazione, rendono più semplice tracciare e gestire le modifiche.  
 
 Ad **<span style="color: #529E72;">esempio</span>**, immagina un progetto con i seguenti branch:  
 - `master`: contiene solo versioni stabili.  
 - `develop`: raccoglie modifiche da branch secondari come `feature/login` o `bugfix/issue-123`.  
-  Quando una funzionalità o un bug fix è pronto, viene testato e unito a `develop`. Una volta che `develop` è stabile, viene unito a `master`.
 
-# Workflow dei Branch in Git
-
-## **Branch Tematici (Topic Branches)**
-
-I branch tematici sono branch a breve durata creati per lavorare su una singola funzionalità o correzione. Sono ideali per:
-- Separare il lavoro in corso da altre modifiche.
-- Facilitare il code review e la collaborazione.
-
-### Vantaggi:
-- Consentono di passare rapidamente da un'attività all'altra.
-- Rendono più semplice tracciare e gestire le modifiche.
-
-### Esempio:
-1. Crei un branch per una nuova funzionalità:
-   ```bash
-   git checkout -b feature/login
-   ```
-2. Lavori sul branch e fai commit:
-   ```bash
-   git add .
-   git commit -m "Aggiunta funzionalità di login"
-   ```
-3. Una volta completato, unisci il branch a `develop`:
-   ```bash
-   git checkout develop
-   git merge feature/login
-   ```
-4. Elimini il branch locale:
-   ```bash
-   git branch -d feature/login
-   ```
-
----
-
-## **Branch Remoti**
-
-I branch remoti rappresentano lo stato dei branch su un repository remoto. Non possono essere modificati direttamente, ma vengono aggiornati automaticamente durante la comunicazione con il server remoto.
-
-### Esempio:
-- **`origin/master`**: rappresenta il branch `master` sul remoto.
-- **`origin/feature/login`**: rappresenta il branch `feature/login` sul remoto.
-
-Per sincronizzare il tuo repository locale con il remoto:
-1. **Fetch**: scarica gli aggiornamenti senza unirli:
-   ```bash
-   git fetch origin
-   ```
-2. **Merge**: unisci le modifiche al tuo branch corrente:
-   ```bash
-   git merge origin/master
-   ```
-3. **Checkout di un branch remoto**: crea un branch locale basato su un branch remoto:
-   ```bash
-   git checkout -b feature/login origin/feature/login
-   ```
-
----
-
-## **Push dei Branch**
-
-Per condividere un branch con altri, devi eseguire un push verso il repository remoto:
-```bash
-git push origin <nome-branch>
-```
-
-### Esempio:
-1. Crei un branch locale:
-   ```bash
-   git checkout -b serverfix
-   ```
-2. Fai delle modifiche e le committi:
-   ```bash
-   git add .
-   git commit -m "Fix del server"
-   ```
-3. Esegui il push del branch verso il remoto:
-   ```bash
-   git push origin serverfix
-   ```
-
-Se vuoi rinominare il branch remoto durante il push:
-```bash
-git push origin serverfix:nuovo-nome
-```
-
----
-
-## **Nota sui Branch Privati**
-I branch locali non vengono sincronizzati automaticamente con il remoto. Questo ti permette di mantenere branch privati per lavoro personale e condividere solo quelli necessari.
-
----
-
-## **Caching delle Credenziali**
-Se utilizzi un URL HTTPS per il push, Git ti chiederà username e password. Per evitare di inserirli ogni volta, puoi configurare una cache delle credenziali:
-```bash
-git config --global credential.helper cache
-```
-
----
-
-## **Conclusione**
-I branch in Git offrono flessibilità e controllo sullo sviluppo del progetto. Scegliere il workflow giusto dipende dalle esigenze del team e dalla complessità del progetto. Utilizza branch a lunga durata per gestire la stabilità del codice e branch tematici per lavorare su funzionalità specifiche.
-
-Se hai bisogno di ulteriori chiarimenti o esempi, fammi sapere!
-
-# Branching Workflows
-
-Now that you have the basics of branching and merging down, what can or should you do with them? In this section, we’ll cover some common workflows that this lightweight branching makes possible, so you can decide if you would like to incorporate it into your own development cycle.
-
-## Long-Running Branches
-
-Because Git uses a simple three-way merge, merging from one branch into another multiple times over a long period is generally easy to do. This means you can have several branches that are always open and that you use for different stages of your development cycle; you can merge regularly from some of them into others.
-
-Many Git developers have a workflow that embraces this approach, such as having only code that is entirely stable in their master branch – possibly only code that has been or will be released. They have another parallel branch named develop or next that they work from or use to test stability – it isn’t necessarily always stable, but whenever it gets to a stable state, it can be merged into master. It’s used to pull in topic branches (short-lived branches, like your earlier iss53 branch) when they’re ready, to make sure they pass all the tests and don’t introduce bugs.
-
-In reality, we’re talking about pointers moving up the line of commits you’re making. The stable branches are farther down the line in your commit history, and the bleeding-edge branches are farther up the history.
-
-It’s generally easier to think about them as work silos, where sets of commits graduate to a more stable silo when they’re fully tested.
-
-You can keep doing this for several levels of stability. Some larger projects also have a proposed or pu (proposed updates) branch that has integrated branches that may not be ready to go into the next or master branch. The idea is that your branches are at various levels of stability; when they reach a more stable level, they’re merged into the branch above them. Again, having multiple long-running branches isn’t necessary, but it’s often helpful, especially when you’re dealing with very large or complex projects.
-
-## Topic Branches
-
-Topic branches, however, are useful in projects of any size. A topic branch is a short-
-lived branch that you create and use for a single particular feature or related work.
-This is something you’ve likely never done with a VCS before because it’s generally too
-expensive to create and merge branches. But in Git it’s common to create, work on,
-merge, and delete branches several times a day.
-
-You saw this in the last section with the iss53 and hotfix branches you created. You
-did a few commits on them and deleted them directly after merging them into your
-main branch. This technique allows you to context-switch quickly and completely –
-because your work is separated into silos where all the changes in that branch have to
-do with that topic, it’s easier to see what has happened during code review and such.
-You can keep the changes there for minutes, days, or months, and merge them in when
-they’re ready, regardless of the order in which they were created or worked on.
-
-Consider an example of doing some work (on master), branching off for an issue (iss91),
-working on it for a bit, branching off the second branch to try another way of
-handling the same thing (iss91v2), going back to your master branch and working there
-for a while, and then branching off there to do some work that you’re not sure is a
-good idea (dumbidea branch). Your commit history will look something like this:
-
-Now, let’s say you decide you like the second solution to your issue best (iss91v2); and
-you showed the dumbidea branch to your coworkers, and it turns out to be genius. You
-can throw away the original iss91 branch (losing commits C5 and C6) and merge in the
-other two. Your history then looks like this:
-
-We will go into more detail about the various possible workflows for your Git
-project in Distributed Git, so before you decide which branching scheme your next
-project will use, be sure to read that chapter.
-
-It’s important to remember when you’re doing all this that these branches are
-completely local. When you’re branching and merging, everything is being done only in
-your Git repository – no server communication is happening.
-
-## Remote Branches
-Remote branches are references (pointers) to the state of branches in your remote repositories. They’re local branches that you can’t move; they’re moved automatically for you whenever you do any network communication. Remote branches act as bookmarks
-to remind you where the branches on your remote repositories were the last time you
-connected to them.
-
-They take the form (remote)/(branch). For instance, if you wanted to see what the
-master branch on your origin remote looked like as of the last time you communicated
-with it, you would check the origin/master branch. If you were working on an issue
-with a partner and they pushed up an iss53 branch, you might have your own local
-iss53 branch; but the branch on the server would point to the commit at origin/iss53.
-
-This may be a bit confusing, so let’s look at an example. Let’s say you have a Git
-server on your network at git.ourcompany.com. If you clone from this, Git’s clone
-command automatically names it origin for you, pulls down all its data, creates a
-pointer to where its master branch is, and names it origin/master locally. Git also
-gives you your own local master branch starting at the same place as origin’s master
-branch, so you have something to work from.
-
-NOTA: “origin” is not special
-Just like the branch name “master” does not have any special meaning in
-Git, neither does “origin”. While “master” is the default name for a
-starting branch when you run git init which is the only reason it’s
-widely used, “origin” is the default name for a remote when you run git
-clone. If you run git clone -o booyah instead, then you will have
-booyah/master as your default remote branch.
-
-If you do some work on your local master branch, and, in the meantime, someone else
-pushes to git.ourcompany.com and updates its master branch, then your histories move
-forward differently. Also, as long as you stay out of contact with your origin server,
-your origin/master pointer doesn’t move
-
-To synchronize your work, you run a git  fetch  origin command. This command looks
-up which server “origin” is (in this case, it’s git.ourcompany.com), fetches any data from
-it that you don’t yet have, and updates your local database, moving your origin/master
-pointer to its new, more up-to-date position
-
-To demonstrate having multiple remote servers and what remote branches for those
-remote projects look like, let’s assume you have another internal Git server that is
-used only for development by one of your sprint teams. This server is at
-git.team1.ourcompany.com. You can add it as a new remote reference to the project you’re
-currently working on by running the git  remote  add command as we covered in Git
-Basics. Name this remote teamone, which will be your shortname for that whole URL.
-
-Now, you can run git  fetch  teamone to fetch everything the remote teamone server has
-that you don’t have yet. Because that server has a subset of the data your origin
-server has right now, Git fetches no data but sets a remote branch called
-teamone/master to point to the commit that teamone has as its master branch. 
-
-## Pushing
-
-When you want to share a branch with the world, you need to push it up to a
-remote that you have write access to. Your local branches aren’t automatically
-synchronized to the remotes you write to – you have to explicitly push the branches
-you want to share. That way, you can use private branches for work you don’t want to
-share, and push up only the topic branches you want to collaborate on.
-
-If you have a branch named serverfix that you want to work on with others, you can
-push it up the same way you pushed your first branch. Run git push (remote) (branch):
-```
-$ git push origin serverfix
-Counting objects: 24, done.
-Delta compression using up to 8 threads.
-Compressing objects: 100% (15/15), done.
-Writing objects: 100% (24/24), 1.91 KiB | 0 bytes/s, done.
-Total 24 (delta 2), reused 0 (delta 0)
-To https://github.com/schacon/simplegit
- * [new branch]      serverfix -> serverfix
-```
-
-This is a bit of a shortcut. Git automatically expands the serverfix branchname out
-to refs/heads/serverfix:refs/heads/serverfix, which means, “Take my serverfix local branch
-and push it to update the remote’s serverfix branch.” We’ll go over the refs/heads/ part
-in detail in Git Internals, but you can generally leave it off. You can also do git
-push  origin  serverfix:serverfix, which does the same thing – it says, “Take my serverfix
-and make it the remote’s serverfix.” You can use this format to push a local branch
-into a remote branch that is named differently. If you didn’t want it to be called
-serverfix on the remote, you could instead run git  push  origin  serverfix:awesomebranch to
-push your local serverfix branch to the awesomebranch branch on the remote project.
-
-[NOTA: Don’t type your password every time
-If you’re using an HTTPS URL to push over, the Git server will ask
-you for your username and password for authentication. By default it will
-prompt you on the terminal for this information so the server can tell if
-you’re allowed to push.
-
-If you don’t want to type it every single time you push, you can set up
-a “credential cache”. The simplest is just to keep it in memory for a few
-mintues, which you can easily set up by running git config --global
-credential.helper cache.
-
-For more information on the various credential caching options available,
-see Credential Storage.]
-
-The next time one of your collaborators fetches from the server, they will get a
-reference to where the server’s version of serverfix is under the remote branch
-origin/serverfix:
-
-```
-$ git fetch origin
-remote: Counting objects: 7, done.
-remote: Compressing objects: 100% (2/2), done.
-remote: Total 3 (delta 0), reused 3 (delta 0)
-Unpacking objects: 100% (3/3), done.
-From https://github.com/schacon/simplegit
- * [new branch]      serverfix    -> origin/serverfix
-```
-
-It’s important to note that when you do a fetch that brings down new remote branches,
-you don’t automatically have local, editable copies of them. In other words, in this case,
-you don’t have a new serverfix branch – you only have an origin/serverfix pointer
-that you can’t modify.
-
-To merge this work into your current working branch, you can run git merge
-origin/serverfix. If you want your own serverfix branch that you can work on, you
-can base it off your remote branch:
-
-```
-$ git checkout -b serverfix origin/serverfix
-Branch serverfix set up to track remote branch serverfix from origin.
-Switched to a new branch 'serverfix'
-```
-
-This gives you a local branch that you can work on that starts where origin/serverfix is.
-
----
-
-Reflog
-Utilizzo di `git reflog` per recuperare commit persi o annullare errori.
-1. Reset, Revert e Restore
-Differenze tra `git reset`, `git revert` e `git restore`.
-Quando e come usarli per modificare la cronologia o ripristinare file.
-1. Stash Avanzato
-Utilizzo di `git stash` con opzioni avanzate, come `--include-untracked` o `--patch`.
-Applicazione selettiva di stashes.
-
-What is git stash?
-Stashing takes the Temporary stored state of your working directory.
-# git stash save "<message>" ------> to store the data into stash
-# git stash list ------> to see the stash list
-# git stash apply <stash#> ------> to copy the data into branches
-# git stash pop <stash#> ------> to move the data into branches
-# git stash drop <stash#> ------> to delete the particular stash
-# git stash clear ------> delete the entire stash list
-
-When we use git Stash?
-- If you are checking out from one branch to another branch but you have uncommitted file that you don't want to move then keep that file in stash area.
-- When you are merging two branches and you don't want some files to merge, then we move that files to stash area.
-- When you are pulling (fetch + merge) a branch/file and you don't want some files to merge, then we move that files to stash area.
-
-How do you undo the last commit?
-# git revert <commit_id>
-
----
-
-## Git Parameters:
-
-<!-- TODO -->
-
-*** Mostra la cronologia e lo stato ***
-
-      bisect     Use binary search to find the commit that introduced a bug
-      grep       Print lines matching a pattern
-      log        Mostra i commit log
-      status     stato del contenuto di un progetto
-      show       Show various types of objects
-   
-*** Grow, mark and tweak your common history ***
-
-      branch     Visualizza, crea e elimina ramo (branches)
-      checkout   Cambia ramo (branches) o ripristina la strotura dell'area di lavoro 
-      commit     Registra le modifiche del repository
-      diff       Confronta i commit (esp: commit e area di lovoro)
-      merge      Unisce una o più cronologie di sviluppo
-      rebase     Reapply commits on top of another base tip
-      tag        Crea, visualizza la lista, elimina o verifica il tag della versione del progetto
-
-<!-- Cosa fa `git add -i`? Utilizza l'aggiunta interattiva. -->
-<!-- git bisect: trova il commit che ha introdotto un bug usando la ricerca binaria. -->
-<!-- git reset to get back to a previous commit. -->
-
-<img src="./img/git_cheat_sheet.jpg" alt="Comandi principali di Git" title="Comandi principali di Git" width="30%" style="display:block; margin-left:auto; margin-right:auto; float:left; padding: 5%;">
+Quando una funzionalità o un bug fix è pronto, viene testato e unito a `develop`. Una volta che `develop` è stabile, viene unito a `master`. Questo tipo di workflow ha il vantaggio di mantenere una chiara separazione tra codice stabile e codice in sviluppo, facilitano l'integrazione di modifiche da branch secondari.  
 
 # Riassunto  
 
@@ -848,6 +589,10 @@ git config --global --add safe.directory /storage/emulated/0/Download/uni
 3. Salvare le modifiche usando [`git commit`](#commit).  
 4. Inviare le modifiche al remoto usando [`git push -u <shortname> <nome-branch>`](#push). `-u` per rendere di default le opzioni che seguono, in modo da dover fare poi solo `git push`.  
 5. Allinearsi col remoto, nel caso lavorassimo da più di un device o condividessimo il progetto con altri sviluppatori, usando [`git pull <shortname> <nome-branch>`](#pull).   
+
+<details><summary>Comandi principali di Git</summary>  
+<img src="./img/git_cheat_sheet.jpg" alt="Comandi principali di Git" title="Comandi principali di Git" width="50%" style="display:block; margin-left:auto; margin-right:auto; padding: 1%;">  
+</details><br> 
 
 # Bibliografia
 
