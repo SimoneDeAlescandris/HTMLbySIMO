@@ -12,6 +12,11 @@ COLORI:
 - [Cap. 1](#cap-1)  
   - [1.1 - Introduzione](#11---introduzione)
   - [1.2 - Evoluzione delle macchine multilivello](#12---evoluzione-delle-macchine-multilivello)
+    - [First](#first-generation-1945-1955-vacuum-tubes)
+    - [Seconds](#second-generation-1955-65-transistors-and-batch-systems)
+    - [Third](#third-generation-1965-1980-ics-e-multiprogramming)
+    - [Fourth](#fourth-generation-1980-present-personal-computer)
+    - [Fifth](#fifth-generation-1990present-mobile-computers)
 - [Cap. 2](#cap-2)
   - [2.1 - Processori](#21---processori)
   - [2.2 - Memoria PRINCIPALE](#22---memoria-principale)
@@ -170,35 +175,6 @@ Nei primissimi computer, il confine tra hardware e software era chiaro e cristal
 
 <img src="./img/Architettura/007-PietreMiliari.png" alt="Alcune pietre miliari nello sviluppo del computer digitale moderno." title="Alcune pietre miliari nello sviluppo del computer digitale moderno." style="width:380px; padding:2%; display:block; margin:auto;">  
 
-<!-- 
-VALIDARE QUESTA PARTE IN SEGUITO
-L’astrazione dell’hardware moderno viene dalla "**Macchina di Turing**", di conseguenza il padre del nostro attuale modello di astrazione è Turing, mentre il padre dell’informatica moderna è **John von Neumann**, poiché è stato in grado di concretizzare nella pratica le idee di Turing, che erano corrette e funzionanti, ma al tempo non è stato possibile applicarle. -->
-
-<!-- 
-INTEGRALO NEL TESTO MAN MANO.
-- Invenzione della microprogrammazione: i primi computer digitali, risalenti agli anni 40, avevano solamente due livelli: il livello ISA, in cui erano realizzati tutti i programmi, e il livello logico digitale, che li eseguiva.
-- Invenzione del SO: nel 1960 fu progettato un computer con un software, sempre attivo, in grado di gestire l’hardware (il Sistema Operativo).
-- Migrazione delle funzionalità verso il microcodice: a partire dal 1970 i progettisti cominciarono ad arricchire microcodice con nuove istruzioni sempre più efficienti (INC).
-- Eliminazione della microprogrammazione: i microprogrammi diventarono sempre più grandi e lenti, si pensò allora di eliminare questa tecnica utilizzando solo microcodice (eseguito direttamente dall’hardware).
-- Gli attuali processori si affidano di nuovo alla microprogrammazione.
-
-> Invenzione della microprogrammazione
-I primi computer (’40 ) avevano due livelli: livello ISA e livello logico digitale
-
-> Invenzione del sistema operativo
-Nel 1960 fu progettato un computer con un software, sempre attivo, in grado di gestire l’hardware (il Sistema Operativo).
-
-> Migrazione delle funzionalità verso il microcodice
-A partire dal 1970 i progettisti cominciarono ad arricchire microcodice con nuove istruzioni sempre più efficienti (INC).
-
-> Eliminazione della microprogrammazione
-I microprogrammi diventarono sempre più grandi e lenti, si pensò allora di eliminare questa tecnica utilizzando solo microcodice (eseguito direttamente dall’hardware).
-
----
-
-Gli attuali processori si affidano di nuovo alla microprogrammazione.
--->
-
 <details id="Babbage">  
 <summary style="margin-bottom:0.5em;">Il primo autentico calcolatore digitale fu progettato dal matematico inglese <strong>Charles Babbage</strong> (1792-1871).</summary>  
 <div style="border: 1px solid #aaa; border-radius: 0 0 4px 4px; padding: 1em; margin-top: -1px;">
@@ -238,35 +214,30 @@ Negli Stati Uniti, **John Atanasoff** e **Clifford Berry** (in competizione con 
 
 Il computer di Stibbitz, sebbene meno evoluto di quello di Atanasoff, riuscì a funzionare e il suo inventore ne diede una dimostrazione pubblica nel 1940; vi assistette **John Mauchley**, colui che assieme a **J. Presper Eckert** sviluppò l’<abbr title ="&quot;Electronic Numerical Integrator And Computer" style="font-weight:bold; background-color:#FDDC5C; color:black;&quot;">ENIAC</abbr> nel 1946 (per uso bellico): 30 tonnellate, 18.000 valvole, 1500 relè, 140 KW di consumo, programmabile tramite cavi e interruttori. Era veloce ma complesso da usare. Dato che la guerra finì, la macchina non potè più essere utile per lo scopo originario; fu concesso a Mauchley e Eckert di organizzare una scuola estiva per presentare il loro lavoro ai colleghi. Questo evento segnò l’inizio di un’esplosione di interesse nella costruzione di grandi computer digitali, portando a numerosi progetti accademici e industriali: **EDSAC** (Cambridge), **JOHNIAC**, **ILLIAC**, **MANIAC**, **WEIZAC**. Dopo l’ENIAC, Mauchley ed Eckert iniziarono a progettarne un successore: l’<abbr title ="Electronic Discrete Variable Automatic Computer" style="font-weight:bold;">EDVAC</abbr>, ma lo abbandonarono per fondare una propria compagnia: la Eckert-Mauchley Computer Corporation.  
 
-<u style="font-weight:bold;">John von Neumann</u>, coinvolto nel progetto ENIAC, intuì che il sistema di valvole decimali (1 accesa e 9 spente), usato da Mauchley poteva essere sostituito da un’aritmetica binaria parallela, in modo simile a quanto fatto da Atanasoff anni prima. Successivamente, von Neumann e Goldstine realizzarono **EDSAC**, conosciuto al giorno d'oggi come <span style="font-weight:bold; background-color:#FDDC5C; color:black;">macchina di von Neumann</span>, base dei moderni computer.  
+> Facendo una *piccola digressione*, è opportuno ricordare che Eckert e Mauchley registrarono un *brevetto* in cui sostenevano di essere gli *inventori del computer digitale*, ma dopo anni di controversie legali i tribunali decisero che il loro brevetto non era valido e che l'inventore del computer digitale, pur non avendolo mai brevettato, era stato John Atanasoff, che aveva effettivamente reso l’invenzione di dominio pubblico.  
 
----
----
----
-
-- Parallelamente al progetto IAS, il MIT costruì **Whirlwind I**, da cui derivò la **memoria a nuclei magnetici**, inventata da **Jay Forrester**. Questo fu il primo mini-computer commerciale.  
-- **IBM**, inizialmente focalizzata su schede perforate, entrò nel mercato dei computer nel 1953 (dominandolo) con il **modello 701**, e poi con i modelli **704** e **709**, tutti basati su valvole termoioniche.
+Parallelamente, il MIT costruì **Whirlwind I**, da cui derivò la **memoria a nuclei magnetici**, inventata da **Jay Forrester**. Questo fu il primo mini-computer commerciale. Inoltre, **IBM**, inizialmente focalizzata su schede perforate, entrò nel mercato dei computer nel 1953 (dominandolo) con il **modello 701**, e poi con i modelli **704** e **709**, tutti basati su valvole termoioniche.
 
 ---
 
-> `Facendo una piccola digressione in ambito legale` è opportuno ricordare che Eckert e Mauchley registrarono un brevetto in cui sostenevano di essere gli inventori del computer digitale. A posteriori si può affermare che non sarebbe stato male possedere un tale brevetto. Dopo anni di controversie legali i tribunali decisero che il brevetto Eckert-Mauchley non era valido e che l'inventore del computer digitale, pur non avendolo mai brevettato, era stato John Atanasoff, che aveva effettivamente reso l’invenzione di dominio pubblico.
-> 
+<details>  
+<summary style="margin-bottom:1em;"><abbr title="Von Neumann era un genio del livello di Leonardo da Vinci. Parlava molte lingue, era un esperto di fisica e matematica e aveva la capacità di ricordare perfettamente ogni cosa avesse sentito, visto o letto; era inoltre in grado di citare a memoria e alla lettera libri che aveva letto anni prima. Nel momento in cui cominciò a interessarsi ai computer era già il più importante matematico al mondo.  
+Una delle cose che gli apparvero subito evidenti fu che la programmazione dei computer mediante un gran numero di interruttori e cavi era lenta, tediosa e poco flessibile. Egli comprese che anche i programmi, al pari dei dati, potevano essere rappresentati in forma numerica all’interno della memoria del computer. Inoltre si rese conto che la contorta aritmetica decimale seriale usata nell’elaboratore ENIAC, in cui ogni cifra era rappresentata da 10 valvole (1 accesa e 9 spente), poteva essere sostituita da un'aritmetica binaria parallela, in modo simile a quanto aveva realizzato Atanasoff anni prima." style="font-weight:bold;  text-decoration:underline;">John von Neumann</abbr>, coinvolto nel progetto ENIAC, intuì che il sistema di valvole decimali (1 accesa e 9 spente), usato da Eckert-Mauchley poteva essere sostituito da un’aritmetica binaria parallela, in modo simile a quanto fatto da Atanasoff anni prima. Quindi, assieme a Goldstine realizzò <b>EDSAC</b> (<b>IAS</b>), conosciuto al giorno d'oggi come <span style="font-weight:bold; background-color:#FDDC5C; color:black;">macchina di von Neumann</span>, base dei moderni computer.  
+L'influenza avuta da questo progetto è tale che vale la pena descriverlo brevemente.</summary>  
 
----
-
-Mentre Eckert e Mauchley erano impegnati a lavorare su EDVAC, un membro del progetto ENIAC, **John von Neumann**, andò all’Institute of Advanced Studies di Princeton per costruire la propria versione del EDVAC, la macchina **IAS**. Von Neumann era un genio del livello di Leonardo da Vinci. Parlava molte lingue, era un esperto di fisica e matematica e aveva la capacità di ricordare perfettamente ogni cosa avesse sentito, visto o letto; era inoltre in grado di citare a memoria e alla lettera libri che aveva letto anni prima. Nel momento in cui cominciò a interessarsi ai computer era già il più importante matematico al mondo.
-Una delle cose che gli apparvero subito evidenti fu che la programmazione dei computer mediante un gran numero di interruttori e cavi era lenta, tediosa e poco flessibile. Egli comprese che anche i programmi, al pari dei dati, potevano essere rappresentati in forma numerica all’interno della memoria del computer. Inoltre si rese conto che la contorta aritmetica decimale seriale usata nell’elaboratore ENIAC, in cui ogni cifra era rappresentata da 10 valvole (1 accesa e 9 spente), poteva essere sostituita da un'aritmetica binaria parallela, in modo simile a quanto aveva realizzato Atanasoff anni prima.
-
+<!-- TODO -->
 ![Figura 1.2](./img/Architettura/008-VonNeumann.png "Figura 1.2")
 
-Il primo progetto elementare che descrisse è conosciuto al giorno d'oggi come **macchina di von Neumann**. Fu utilizzato nel computer EDSAC, il primo che memorizzava il programma in memoria, ed è ancora oggi, a ben mezzo secolo di distanza, alla base di quasi tutti i computer digitali. Questo progetto, così come la macchina IAS costruita in collaborazione con Herman Goldstine, ha avuto una tale influenza che vale la pena descriverlo brevemente. Nonostante si associ sempre il nome di Von Neumann a questo progetto, anche Goldstine e altri ricercatori diedero un contributo sostanziale. Uno schema dell'architettura è mostrato nella [**Figura 1.2**](https://www.notion.so/Materiale-per-ASE-e-SO-1401b3574bb84b2a8155f222ffd2b929?pvs=21).
+EDSAC fu il primo computer che memorizzava il programma in memoria.  
+Era composto da **cinque** componenti principali: la memoria, l'unità aritmetico-logica, l’unità di controllo e i dispositivi di input e output.  
 
-**La macchina di von Neumann era composta da** cinque componenti principali: la memoria, l'unità aritmetico-logica, l’unità di controllo e i dispositivi di input e output. 
+- La **memoria** era costituita da 4096 locazioni, ciascuna delle quali conteneva 40 bit. Ciascuna parola poteva mantenere due istruzioni da 20 bit oppure un numero da 40 bit. Le istruzioni erano composte da 8 bit, che definivano il tipo d’istruzione, e dai restanti 12 bit, che specificavano una delle 4096 parole di memoria.  
+- L’**unità aritmetico-logica** (ALU o *Arithmetic Logic Unit*) e l’**unità di controllo** (CU o *Control Unit*) formavano insieme il "cervello" del computer; negli elaboratori moderni esse sono combinate in un unico chip chiamato **CPU** (*Central Processing Unit*, "*unità centrale di calcolo*"). Originariamente, l’ALU eseguiva le istruzioni più elementari, come quelle aritmetiche e logiche, mentre la CU recuperava le istruzioni in memoria secondo l’ordine stabilito dall’algoritmo e permetteva la loro esecuzione.  
+- All'interno dell'unità aritmetico-logica vi era uno speciale registro da 40 bit, chiamato **accumulatore**; era una memoria interna alla CPU che veniva utilizzata per contenere gli operandi delle istruzioni eseguite dalla ALU. La tipica istruzione sommava una parola di memoria all’accumulatore oppure ne copiava il contenuto in memoria. La macchina non aveva un’aritmetica in virgola mobile dato che von Neumann riteneva che ogni matematico che si rispetti dovesse essere in grado di tener traccia a mente della posizione della virgola (per essere precisi, della virgola binaria).  
+</details>
 
-- La **memoria** era costituita da 4096 locazioni, ciascuna delle quali conteneva 40 bit. Ciascuna parola poteva mantenere due istruzioni da 20 bit oppure un numero da 40 bit. Le istruzioni erano composte da 8 bit, che definivano il tipo d’istruzione, e dai restanti 12 bit, che specificavano una delle 4096 parole di memoria.
-- L’**unità aritmetico-logica** (ALU o *Arithmetic Logic Unit*) e l’**unità di controllo** (CU o *Control Unit*) formavano insieme il "cervello" del computer; negli elaboratori moderni esse sono combinate in un unico chip chiamato **CPU** (*Central Processing Unit*, "*unità centrale di calcolo*"). Originariamente, l’ALU eseguiva le istruzioni più elementari, come quelle aritmetiche e logiche, mentre la CU recuperava le istruzioni in memoria secondo l’ordine stabilito dall’algoritmo e permetteva la loro esecuzione.
-- All'interno dell'unità aritmetico-logica vi era uno speciale registro da 40 bit, chiamato **accumulatore**; era una memoria interna alla CPU che veniva utilizzata per contenere gli operandi delle istruzioni eseguite dalla ALU. La tipica istruzione sommava una parola di memoria all’accumulatore oppure ne copiava il contenuto in memoria. La macchina non aveva un’aritmetica in virgola mobile dato che von Neumann riteneva che ogni matematico che si rispetti dovesse essere in grado di tener traccia a mente della posizione della virgola (per essere precisi, della virgola binaria).
-
+---
+---
 ---
 
 Praticamente nello stesso periodo in cui venne inventato l’IAS, altri ricercatori del **M.I.T.** costruirono un computer, chiamato **Whirlwind I**, che, diversamente da IAS, ENIAC e altre macchine dello stesso tipo (dotate di lunghe parole e pensate per poter elaborare numeri molto grandi), aveva parole di soli 16 bit ed era progettato per il controllo in tempo reale. Grazie a questo progetto si deve l’invenzione della memoria a nuclei magnetici da parte di Jay Forrester e, infine, la nascita del primo minicomputer commerciale.
@@ -316,7 +287,7 @@ Negli anni ’50 vennero introdotte le schede perforate, che rendevano possibile
 
 ---
 
-**(ALEX)**
+**(TODO)**
 All’inizio della guerra, i britannici riuscirono a procurarsi “ENIGMA” , per decodificare i codici tedeschi venne costruito “COLOSSUS”, a fine guerra non ebbe più sviluppi.
 
 Nel ‘43 Mauchley e Eckert costruirono un computer elettronico che chiamarono “ENIAC” terminato nel ‘46 quando non poteva più essere utilizzato per lo scopo originario, venne concesso a Mauchley e Eckert di organizzare una scuola estiva per presentare il loro lavoro.
@@ -341,6 +312,31 @@ Unità aritmetico-logica e unità di controllo compongono il cervello del comput
 Mentre Von Neuman realizzava “IAS” altri ricercatori del M.I.T. costruivano un computer chiamato “Whirlwind I”, in tutto ciò IBM si avvicinò nel ‘53 all’ ideazione di computer attraverso la produzione del modello 701, tre anni dopo arrivò il modello 704. 
 
 Nel ‘58 IBM cominciò la produzione del modello 709.
+
+<!-- 
+INTEGRALO NEL TESTO MAN MANO.
+- Invenzione della microprogrammazione: i primi computer digitali, risalenti agli anni 40, avevano solamente due livelli: il livello ISA, in cui erano realizzati tutti i programmi, e il livello logico digitale, che li eseguiva.
+- Invenzione del SO: nel 1960 fu progettato un computer con un software, sempre attivo, in grado di gestire l’hardware (il Sistema Operativo).
+- Migrazione delle funzionalità verso il microcodice: a partire dal 1970 i progettisti cominciarono ad arricchire microcodice con nuove istruzioni sempre più efficienti (INC).
+- Eliminazione della microprogrammazione: i microprogrammi diventarono sempre più grandi e lenti, si pensò allora di eliminare questa tecnica utilizzando solo microcodice (eseguito direttamente dall’hardware).
+- Gli attuali processori si affidano di nuovo alla microprogrammazione.
+
+> Invenzione della microprogrammazione
+I primi computer (’40 ) avevano due livelli: livello ISA e livello logico digitale
+
+> Invenzione del sistema operativo
+Nel 1960 fu progettato un computer con un software, sempre attivo, in grado di gestire l’hardware (il Sistema Operativo).
+
+> Migrazione delle funzionalità verso il microcodice
+A partire dal 1970 i progettisti cominciarono ad arricchire microcodice con nuove istruzioni sempre più efficienti (INC).
+
+> Eliminazione della microprogrammazione
+I microprogrammi diventarono sempre più grandi e lenti, si pensò allora di eliminare questa tecnica utilizzando solo microcodice (eseguito direttamente dall’hardware).
+
+---
+
+Gli attuali processori si affidano di nuovo alla microprogrammazione.
+-->
 
 ### **Second generation** (1955-65): Transistors and batch systems
 
@@ -459,7 +455,7 @@ L’idea era quella di trasferire i job su nastro magnetico usando un calcolator
 
 ---
 
-**(ALEX)**
+**(TODO)**
 Il transistor venne inventato nel ‘48, fu rivoluzionario, in 10 anni sostituì completamente le macchine a valvole rendendole obsolete.
 
 Il primo computer a transistor fu ideato dal M.I.T. macchina a 16 bit (basata su “Whirlwind I”, chiamato “TX-0”.
@@ -719,7 +715,7 @@ Nasce il primo sistema timesharing, CTSS (Compatible Time Sharing System) svilup
 
 ---
 
-**(ALEX)**
+**(TODO)**
 Nel 1958 ci fu una svolta: l’invenzione dei circuiti integrati su silicio, che permise di realizzare su un unico chip decine di transistor. 
 
 Questo metodo di assemblaggio rese possibile la costruzione di computer più piccoli, veloci e economici rispetto ai loro predecessori.
@@ -991,7 +987,7 @@ Iniziano ad essere utilizzate alcune versioni di UNIX sui PC: Linux, FreeBSD, ..
 
 ---
 
-**(ALEX)**
+**(TODO)**
 Negli anni ‘80 la tecnologia VLSI (Integrazione a larghissima scala) permise di inserire in un unico chip prima decine di migliaia, poi centinaia di migliaia e infine milioni di transistor.
 
 Prima e post PDP-1: 
@@ -1093,7 +1089,7 @@ Computer invisibili che sono integrati in elettrodomestici, orologi, carte di cr
 
 ---
 
-**(ALEX)**
+**(TODO)**
 La quinta generazione venne pensata dai Giapponesi includendo nei computer l’intelligenza artificiale, progetto che fallì, la vera quinta generazione ebbe luce sottoforma di rimpicciolimento dei dispositivi.
 
 Vennero ideati i PDA (assistente digitale personale) la cui evoluzione portò agli attuali smartphone (creati per la prima volta da IBM). 
@@ -1115,7 +1111,7 @@ La vera rivoluzione la portarono i computer “invisibili”, integrati in elett
 
 ---
 
-**(ALEX)**
+**(TODO)**
 > 1.3.1  Forze tecnologiche ed economiche / Legge di Moore
 
 L’industria dei computer più velocemente di tutte le altre. 
@@ -1160,7 +1156,7 @@ Quindi 1 kB di memoria contiene 1024 Byte (= 216) e non 1000 Byte.
 
 ---
 
-**(ALEX)**  
+**(TODO)**  
 Nella seguente tabella vengono mostrate le principali unità metriche utilizzate nei sistemi informatici comuni:
 ![Unità metriche](./img/Architettura/AlexUnitàMetriche.jpg)
 Con i simboli KB,MB,GB,TB utilizziamo rispettivamente: 2^10, 2^30, 2^30, 2^40 byte.
