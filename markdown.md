@@ -7,7 +7,7 @@
   - [~~Strikethrough~~](#strikethrough)
   - [<u>Underline</u>](#underline)
   - **<a href="#Header" style="font-size: 20px;">Header</a>**
-  - [Apice e Pedice](#apice-pedice)
+  - [Apice, Pedice e LaTex](#apice-pedice-latex)
   - <a href="#commenti" style="color: green;">Commenti</a>
   - **<a href="#testo-colorato" style="color: blue;">Testo colorato</a>**
   - [Quote](#quote)
@@ -44,19 +44,20 @@ Markdown fornisce una sintassi più semplice rispetto all'HTML, pur venendo trad
 - <span id="Underline"><u>Underline</u></span>: testo sottolineato non supportato nativamente, bisogna ricorrere al tag HTML `<u>`.
 - **<span id="Header" style="font-size: 20px;">Header</span>**: nei titoli si antepone alla frase il cancelletto e, come in HTML, mettendone un numero che va da uno (`#`, equivalente a `<h1>`) a sei (`######`, equivalente a `<h6>`) si ottiene una diversa grandezza per il titolo. <br><br>
 
-- **<span id="apice-pedice">Superscript e Subscript</span>** (Apice e Pedice): usati per formule matematiche, unità di misura e note a piè di pagina. Non sono supportati in Markdown puro o GitHub. Es.:
+- <span id="apice-pedice-latex" style="font-weight:bold;">Superscript</span> (Apice), <strong>Subscript</strong> (Pedice) e <b>LaTex</b>: usati per formule matematiche, unità di misura e note a piè di pagina. Non sono supportati in Markdown puro o GitHub.
   ```md
-  x^2^ <!-- Apice -->
+  x^2^  <!-- Apice -->
   H~2~O <!-- Pedice -->
   ```
   Versione HTML:  
   ```html
   x<sup>2</sup> <!-- Apice -->
   H<sub>2</sub>O <!-- Pedice -->
-  Loro alternativa è usare **MathJax/KaTeX** nei documenti che supportano LaTeX:  
+  ```
+  Loro alternativa è usare il **LaTex** nei documenti che lo supportano:  
   ```md
-  $$ x^2 $$  
-  $$ H_2O $$
+  $$x^2$$  
+  $$H_2O$$
   ```
 - <span id="commenti" style="color: green;">Commenti</span>: non supportati, possibili solo attraverso la sintassi HTML. Es.: `<!-- Commento -->`. <!-- Questo è un segreto! -->
 - **<span id="testo-colorato" style="color: blue;">Testo colorato</span>**: solo se si usa HTML e CSS. Es.: `<span style="color: blue;">this</span>`
