@@ -7,7 +7,11 @@ COLORI:
 - GIALLO: #FDDC5C.
 -->
 
-# Indice  
+<img src="./img/Architettura/001-Architettura.jpg" alt="Architettura dei Sistemi di Elaborazione" title="Architettura dei Sistemi di Elaborazione" width="34px" style="float:left; margin-right:12px;">  
+
+# Architettura dei Sistemi di Elaborazione  
+
+## Indice  
 
 - [Cap. 1](#cap-1)  
   - [1.1 - Introduzione](#11---introduzione)
@@ -27,11 +31,9 @@ COLORI:
 - [Strumenti software](#strumenti-software)
 <br>  
 
-<img src="./img/Architettura/001-Architettura.jpg" alt="Architettura dei Sistemi di Elaborazione" title="Architettura dei Sistemi di Elaborazione" width="34px" style="float:left; margin-right:12px;">
+## Cap. 1  
 
-# Cap. 1  
-
-## <span style="font-weight:bold; color:#529E72;">1.1</span> - Introduzione
+### <span style="font-weight:bold; color:#529E72;">1.1</span> - Introduzione
 
 Il computer è una macchina elettronica digitale in grado di risolvere problemi attraverso un insieme di istruzioni assegnate (il **programma**). Queste istruzioni sono semplici:  
 - sommare due numeri;  
@@ -60,22 +62,22 @@ Per eseguire L<sub>n</sub> (caso generale) su una macchina M<sub>n-1</sub>, in g
 
 L’insieme dei tipi di dati, delle operazioni e delle funzionalità di ciascun livello è chiamato **architettura**. Essa riguarda gli aspetti visibili agli utenti (come la quantità di memoria RAM disponibile per eseguire un determinato programma), ma non gli aspetti tecnici di implementazione (come la tecnologia con cui è realizzata la memoria RAM). L'**architettura degli elaboratori** (o calcolatori) è lo studio dell'organizzazione e del funzionamento dei componenti hardware di un computer.  
 
-### 🔹 Livello -1: Dispositivi Fisici (Hardware)  
+#### 🔹 Livello -1: Dispositivi Fisici (Hardware)  
 
 Alla base si trovano i componenti **hardware**: chip, schede, unità flash, dischi, tastiera, monitor e oggetti fisici similari; come questi dispositivi siano realizzati e operino è <u>compito degli ingegneri informatici</u>.  
 
-### 🔹 Livello 0: Livello Logico Digitale  
+#### 🔹 Livello 0: Livello Logico Digitale  
 
 Gli oggetti che vengono analizzati nel livello più basso, il livello logico digitale, sono le **porte** (gate). Queste pur essendo costruite utilizzando componenti analogici come i transistor, possono essere modellate come dispositivi digitali. Unendo più porte si può formare una memoria da 1 bit, che può memorizzare un valore fra 0 e 1. Combinando più memorie a 1 bit in gruppi si arriva a 16, 32 o 64, formando quelli che vengono chiamati *registri* (combinazioni di porte logiche).  
 
-### 🔹 Livello 1: Micro-architettura  
+#### 🔹 Livello 1: Micro-architettura  
 
 Nel gradino appena superiore abbiamo le **microarchitetture**: i dispositivi fisici sono raggruppati per formare unità funzionali. Tipicamente in questo livello si inseriscono i gruppi di **registri** (piccole memorie velocissime, in genere da 8 a 32 bit) come la **CPU** ("*Central Processing Unit*" - "*Unità Centrale di Elaborazione*") e un circuito chiamato **ALU** (*Arithmetic Logic Unit*, *unità aritmetico-logica*), capace di effettuare semplici operazioni aritmetiche.  
 I registri sono connessi alla ALU per formare un **data path** (percorso dati) lungo il quale questi ultimi si spostano. L’operazione base del percorso dati consiste nel selezionare uno o due registri, permettere alla ALU di operare su di loro (per esempio sommandoli) e memorizzare infine il risultato in uno dei registri.  
 Le operazioni del percorso dati sono controllate in genere da un programma chiamato **microprogramma**, mentre su alcune macchine l'operazione viene effettuata direttamente dai circuiti hardware.  
 Lo scopo del data path è eseguire [insiemi di istruzioni](#livello-2-instruction-set-architecture-isa), alcune delle quali vengono completate in un ciclo di data path, mentre altre richiederne più d'uno.  
 
-### 🔹 Livello 2: Instruction Set Architecture (ISA)  
+#### 🔹 Livello 2: Instruction Set Architecture (ISA)  
 
 Il livello 2 è costituito dal cosiddetto **livello ISA** (*Instruction Set Architecture*), ovvero l’insieme delle istruzioni che un processore è in grado di eseguire direttamente (interpretate dal microprogramma).  
 Ogni produttore di CPU documenta le proprie ISA, specificando:  
@@ -89,7 +91,7 @@ Se un produttore realizzasse due versioni della stessa macchina con interpreti I
 
 L’ISA costituisce il confine tra hardware e software, ed è spesso denominata anche **linguaggio macchina** (in codice binario ovviamente), poiché è l’unico linguaggio direttamente comprensibile dal processore.  
     
-### 🔹 Livello 3: Sistema Operativo  
+#### 🔹 Livello 3: Sistema Operativo  
 
 Il livello 3 corrisponde a quello del **Sistema Operativo** ed è spesso definito un **livello ibrido**, poiché condivide molte istruzioni con il livello precedente (l'ISA), ma introduce anche nuove funzionalità e astrazioni:  
 - una **nuova organizzazione della memoria** (memoria virtuale, protezione tra processi);  
@@ -122,7 +124,7 @@ Quando un computer ha molti utenti o processi attivi, *è compito del sistema op
     - Presupponendo che vi sia abbastanza RAM per gestire molti programmi, è più efficiente condividerla anziché allocarla ad un singolo programma, specialmente se questo necessita solo di una piccola frazione del totale.  
     - Lo stesso discorso vale per i dischi e le unità flash, che possono contenere contemporaneamente file di diversi utenti ed è compito del sistema operativo gestire la loro allocazione dello spazio su disco e tenere traccia di chi sta usando quali blocchi.  
 
-### 🔹 **Livello 4 - Linguaggio Assembly**  
+#### 🔹 **Livello 4 - Linguaggio Assembly**  
 
 Quando si scrive un programma in **linguaggio assembly**, questo non viene eseguito direttamente dalla macchina, ma è invece **tradotto** in un linguaggio di livello inferiore (1, 2 o 3) e successivamente **interpretato** (o compilato) dalla macchina virtuale o reale corrispondente. Questo processo di traduzione è gestito da un programma chiamato "**assemblatore**", il quale converte il codice assembly in istruzioni comprensibili dalla macchina sottostante.  
 
@@ -133,7 +135,7 @@ Ciò avviene perché i linguaggi macchina (ISA) sono **numerici** (in codifica b
 - Serve solo come **strumento per l'umano**;  
 - **Dipende strettamente dall’ISA sottostante**: ogni ISA ha il suo linguaggio assembly.  
 
-### 🔹 Livello 4+: Programmi Utente  
+#### 🔹 Livello 4+: Programmi Utente  
 
 Il livello 5 (e successivi) definisce **linguaggi di programmazione ad alto livello** che sono più umanamente comprensibili e meno basati su numeri; vengono tradotti da un compilatore al livello 3 o al livello 4 o in casi meno frequenti, interpretati.  
 </details>  
@@ -169,7 +171,7 @@ Riassunto 1 - pag. 3
 libro ASE - pag. 5
 -->
 
-## 1.2 - Evoluzione delle macchine multilivello  
+### 1.2 - Evoluzione delle macchine multilivello  
 
 Nei primissimi computer, il confine tra hardware e software era chiaro e cristallino. Nel corso del tempo, quel confine si è sfocato in modo considerevole, tanto che oggi è spesso difficile tenerli separati. Un tema centrale è che <u>*hardware e software sono logicamente equivalenti*</u>. Come ha affermato Karen Panetta Lentz: "*L’hardware non è che software pietrificato*". Ovviamente è anche vero il contrario: ogni istruzione eseguita dall’hardware può essere simulata via software.  
 
@@ -208,7 +210,7 @@ Durante e dopo la Seconda Guerra Mondiale, si svilupparono i primi computer digi
   </div></details>  
 - Ad Harvard, nel 1944, Howard Aiken realizzò la "macchina analitica" immaginata da Babbage (attraverso relè meccanici): il **Mark I**. Tuttavia, dal momento in cui Aiken realizzò il suo successore, il Mark II, i computer basati su relè divennero obsoleti; era iniziata infatti l’era dell’elettronica.
 
-### **First generation** (1945-1955): Vacuum tubes  
+#### **First generation** (1945-1955): Vacuum tubes  
 
 Negli Stati Uniti, **John Atanasoff** e **Clifford Berry** (in competizione con **George Stibitz**) realizzarono quello che ad oggi è considerato il primo computer digitale funzionante, basato su aritmetica binaria e memoria a condensatori, anticipando le moderne DRAM, ma la macchina non fu mai completata a causa, come per [Babbage](#Babbage), dell’inadeguatezza tecnologica di quel tempo.  
 
@@ -338,7 +340,7 @@ I microprogrammi diventarono sempre più grandi e lenti, si pensò allora di eli
 Gli attuali processori si affidano di nuovo alla microprogrammazione.
 -->
 
-### **Second generation** (1955-65): Transistors and batch systems
+#### **Second generation** (1955-65): Transistors and batch systems
 
 - L'introduzione dei [**transistor](https://www.notion.so/Storia-dei-processori-Intel-c6bfc5ce1ba84608a9f9baeb8ea26384?pvs=21)** durante la metà degli anni '50 cambiò radicalmente situazione. I calcolatori divennero abbastanza affidabili da poter essere costruiti e venduti, dando all'acquirente la ragionevole certezza che avrebbero funzionato abbastanza a lungo da poter svolgere un lavoro utile e, per la prima volta, ci fu una chiara separazione fra progettisti, costruttori, operatori, programmatori e personale di manutenzione.
     
@@ -481,7 +483,7 @@ Seymour Cray, il progettista di 6600, dedicò tutta la vita a costruire macchine
 
 Uno degli ultimi computer che si  distinse parecchio fu il “Burroughs B5000”, i progettisti di modelli come: PDP-1, 7094 e 6600 si concentravano solo sull’hardware, si nel renderlo economico (DEC) sia in quello di renderlo veloce (IBM e CDC) ignorando quasi completamente il software cosa che i progettisti del B5000 tennero in considerazione.
 
-### **Third generation** (1965-1980): ICs e multiprogramming
+#### **Third generation** (1965-1980): ICs e multiprogramming
 
 All'inizio degli anni '60, la maggior parte dei produttori di calcolatori aveva due linee di prodotti distinte e incompatibili: computer scientifici *word-oriented*, di larga scala come il 7094, usati per calcoli numerici scientifici e ingegneristici, e computer commerciali *character-oriented*, come il 1401, ampiamente usati da banche e compagnie assicurative per ordinamenti su nastro e stampe.
 
@@ -746,7 +748,7 @@ Un’altra caratteristica di 360 era legata all’enorme quantità di spazio deg
 
 Nel mentre DEC sviluppò quello che fu il fratellino di 360, PDP-11.
 
-### **Fourth generation** (1980-present): Personal Computer
+#### **Fourth generation** (1980-present): Personal Computer
 
 [[**Storia dei processori Intel**](https://it.wikipedia.org/wiki/Microprocessori_Intel)](https://www.notion.so/Storia-dei-processori-Intel-c6bfc5ce1ba84608a9f9baeb8ea26384?pvs=21)
 
@@ -1024,7 +1026,7 @@ Raffreddamento dei computer costoso
 
 Si cominciò a virare sul costruire architetture parallele per ricavare maggiori prestazioni per i PC.
 
-### **Fifth generation** (1990–present): Mobile Computers
+#### **Fifth generation** (1990–present): Mobile Computers
 
 Fin dai tempi in cui il detective Dick Tracy inizio a parlare al suo "orologio ricetrasmettitore" nel fumetto degli anni ’40, un sistema di comunicazione che si poteva portare in giro ovunque si andasse è stato il sogno di tutti. Il primo vero telefono mobile apparve nel 1946 e pesava 40 chili. Lo si poteva portare dove si desiderava, purché si avesse un’automobile con cui portarselo in giro.
 
@@ -1096,7 +1098,7 @@ Vennero ideati i PDA (assistente digitale personale) la cui evoluzione portò ag
 
 La vera rivoluzione la portarono i computer “invisibili”, integrati in elettrodomestici, orologi, carte di credito ecc. .
 
-## 1.3 - Tipologie di computer  
+### 1.3 - Tipologie di computer  
 
 ![Figura 1.9 - pag. 32](./img/Architettura/Riassunto-TipilogieDiComputer.png)  
 - **Computer usa e getta**: Sono chip inseriti all’interno di cartoline di auguri che emettono melodie. I chip RFID (Radio Frequency IDentification) sono i più famosi e vengono utilizzati in molteplici campi per il loro basso costo.  
@@ -1138,7 +1140,7 @@ Tipologie di Computer
 - **Clusters:** sono degli insiemi di Server (anche oltre 100.000) connessi insieme da reti ad alta velocità per lavorare insieme allo stesso problema, un tipico utilizzo sarebbe per realizzare un internet web server.  
 - **Mainframes:** sono Computer con molte CPU ed alte capacità elaborative, affidabilità, sicurezza, costo, sono migliori in tutto rispetto ai server, anche in fatto di capacità spaziale, vengono utilizzati per cose importanti da enti governativi e grandi aziende, (banche, assicurazioni, etc..). Il primo mainframe fu creato negli anni ‘60 dall’IBM (System/360).  
 
-## La storia di Intel (RIASSUNTO)
+### La storia di Intel (RIASSUNTO)
 
 Nel 1968 la Intel Corporation incominciò a costruire chip di memoria utilizzando il silicio.  
 ![Intel](./img/Architettura/Riassunto-Intel.png)  
@@ -1147,7 +1149,7 @@ Nel 1968 la Intel Corporation incominciò a costruire chip di memoria utilizzand
 ![Moore](./img/Architettura/Riassunto-Moore.png)
 La legge non è più vera: l’utilizzo di transistor sempre più piccoli richiede una maggiore tensione (V) che, a sua volta, produce maggiore calore nel chip difficile da smaltire.
 
-## 1.6 - Unità metriche  
+### 1.6 - Unità metriche  
 
 **(RIASSUNTO)**  
 ![Unità metriche](./img/Architettura/AlexUnitàMetriche.jpg)  
@@ -1162,9 +1164,9 @@ Nella seguente tabella vengono mostrate le principali unità metriche utilizzate
 Con i simboli KB,MB,GB,TB utilizziamo rispettivamente: 2^10, 2^30, 2^30, 2^40 byte.
 Mentre con i simboli Kbps, Mbps, Gbps, Tbps utilizziamo: 10^3, 10^6, 10^9, 10^12 bit/s.
 
-# Cap. 2  
+## Cap. 2  
 
-## 2.1 - **PROCESSORI**  
+### 2.1 - **PROCESSORI**  
 
 La CPU è il cervello del computer, ed è composta dall’unità di controllo (CU), l’unità aritmetica e logica (ALU) e alcuni registri (piccole memorie ad altissima velocità).  
 Tra i registri sono molto importanti:  
@@ -1172,7 +1174,7 @@ Tra i registri sono molto importanti:
 - Instruction Register (IR): mantiene l’istruzione corrente in fase di esecuzione.  
 Le componenti di un computer sono collegate attraverso un bus: una collezione di cavi paralleli utilizzati per trasferire indirizzi, dati e segnali di controllo.  
 
-### Organizzazione della CPU  
+#### Organizzazione della CPU  
 
 Il percorso dati (data path) di una tipica CPU di von Neumann è composta dai registri (da 1 a 32), dalla ALU e da alcuni bus che connettono fra loro le diverse parti.  
 I registri alimentano due registri di input della ALU che mantengono i dati di ingresso della ALU mentre questa è occupata nell’esecuzione di alcune computazioni.  
@@ -1184,7 +1186,7 @@ La maggior parte delle istruzioni può essere divisa in due categorie principali
 - istruzioni registro-memoria (necessita di una fase di caricamento delle parole della memoria nei registri): permettono di prelevare parole di memoria per portarle all’interno dei registri (o viceversa), dove sono utilizzabili, per esempio, come input della ALU per effettuare istruzioni successive.
 - istruzioni registro-registro (gli operandi sono già pronti nei registri): preleva due operandi dai registri, li porta all’interno dei registri di input della ALU, esegue su di loro una qualche operazione e ne memorizza il risultato in uno dei registri.
 
-### Esecuzione dell’istruzione
+#### Esecuzione dell’istruzione
 
 La CPU esegue ogni istruzione compiendo una serie di passi:  
 1. prelevare la successiva istruzione dalla memoria per portarla nell’IR;  
@@ -1197,13 +1199,13 @@ La CPU esegue ogni istruzione compiendo una serie di passi:
 
 Spesso ci si riferisce a questa sequenza di passi con il termine di ciclo esecutivo delle istruzioni, o ciclo di prelievodecodifica-esecuzione (fetch-decode-execute).  
 
-### Strategie di progettazione delle CPU  
+#### Strategie di progettazione delle CPU  
 
 - **CISC** (Complex Instruction Set Computer): la CPU è in grado di comprendere molte istruzioni complesse nativamente (è il più alto livello di astrazione riconosciuto dalla macchina);  
 - **RISC** (Reduced Instruction Set Computer): si basa sull’idea che se le istruzioni sono semplici e poche, esse possono essere eseguite rapidamente (è necessario un solo ciclo nel datapath);  
 - Ibrido: a partire dal x486, le CPU intel contengono un sottoinsieme di istruzioni RISC (quelle più comuni) che possono essere eseguite in un singolo ciclo nel datapath, mentre le altre complesse sono interpretate secondo la classica modalità CISC.  
 
-### Principi di progettazione dei calcolatori moderni  
+#### Principi di progettazione dei calcolatori moderni  
 
 Esiste un insieme di principi di progettazione, talvolta chiamati principi di progettazione RISC, che i progettisti delle CPU cercano di seguire il più possibile.  
 
@@ -1218,7 +1220,7 @@ Esiste un insieme di principi di progettazione, talvolta chiamati principi di pr
 - **Molti registri disponibili**:  
   Dato che l’accesso alla memoria è relativamente lento occorre prevedere molti registri (almeno 32) di modo che, una volta prelevata la parola, possa essere mantenuta nel registro fintanto sia necessario. È particolarmente inefficiente trovarsi senza registri liberi, in quanto obbliga a scaricare in memoria tutti i valori dei registri per poi ricaricarli.  
 
-### Parallelismo a livello di istruzione  
+#### Parallelismo a livello di istruzione  
 
 Poiché l’incremento del clock del processore ha raggiunto un limite fisico, i progettisti di CPU guardano al parallelismo (più istruzioni nello stesso tempo) per incrementare le prestazioni.  
 
@@ -1226,7 +1228,7 @@ Il parallelismo si può ottenere in due diversi modi:
 - Parallelismo a livello di istruzione: il parallelismo è sfruttato all’interno delle istruzioni per ottenere un maggior numero di istruzioni al secondo;  
 - Parallelismo a livello di processore: più CPU collaborano per risolvere lo stesso problema.  
 
-### Pipelining  
+#### Pipelining  
 
 Una limitazione nella velocità di esecuzione delle istruzioni è rappresentato dal prelievo delle istruzioni dalla
 memoria.  
@@ -1241,7 +1243,7 @@ Durante il primo ciclo di clock lo stadio S<sub>1</sub> sta lavorando sull’ist
 Il pipelining permette di bilanciare la latenza (quanto dura l’esecuzione di una istruzione) con la banda del processore (quanti MIPS la CPU è in grado di emettere). Una CPU, senza pipeline, che opera con clock di T ns ed emette una istruzione per ciclo di clock ha una banda di 10<sup>3</sup>/T MIPS.  
 Supponendo di disporre di una CPU con un clock di T ns e una pipeline a P stadi (in cui ogni stadio necessita di un ciclo di clock per essere completato), la latenza totale è pari a P $\cdot$ T ns mentre la banda è P $\cdot$ 10<sup>3</sup>/T MIPS, cioè P volte rispetto alla banda di una CPU senza pipeline con medesima latenza.  
 
-### Processori con più pipeline  
+#### Processori con più pipeline  
 
 Avere due pipeline è sicuramente meglio di averne una sola.  
 Questa architettura è stata utilizzata inizialmente dall’Intel x486.  
@@ -1249,7 +1251,7 @@ Questa architettura è stata utilizzata inizialmente dall’Intel x486.
 Affinché le due istruzioni possano essere eseguite in parallelo, non devono però esserci conflitti nell’uso delle risorse (cioè i registri) e nessuna delle due istruzioni deve dipendere dal risultato dell’altra.  
 Inoltre, non tutte le istruzioni possono essere svolte in parallelo (l’input di una istruzione può dipendere dal risultato della precedente) e sarebbero necessarie troppe componenti hardware per le varie unità che andrebbero poi sincronizzate.
 
-### Architetture superscalari  
+#### Architetture superscalari  
 
 
 Viene utilizzata inizialmente da Intel Core. Il processore dispone di una sola pipeline con più unità funzionali in corrispondenza di alcuni stadi.  
@@ -1257,13 +1259,13 @@ Viene utilizzata inizialmente da Intel Core. Il processore dispone di una sola p
 Affinché l’architettura abbia senso è necessario che la velocità di emissione della fase S<sub>3</sub> sia più alta rispetto a quella della fase S<sub>4</sub>.  
 La fase S<sub>4</sub> può avere delle unità ALU duplicate
 
-### Parallelismo a livello di processo  
+#### Parallelismo a livello di processo  
 
 Il parallelismo nel chip aiuta a migliorare le performance della CPU: con il pipelining e le architetture superscalari si può arrivare ad un fattore di miglioramento da 5 a 10.  
 Però per incrementare drasticamente le performance di un calcolatore occorre progettare sistemi con molte CPU, in questo caso si può arrivare ad ottenere un incremento di 50, 100, o anche più.  
 Esistono tre differenti approcci: computer con parallelismo sui dati, multiprocessori, multicomputer.  
 
-### Computer con parallelismo sui dati  
+#### Computer con parallelismo sui dati  
 
 Ci sono due schemi differenti:  
 - Processori SIMD (Single Instruction-stream Multiple Data-stream): sono costituiti da un vasto numero di processori identici che eseguono la stessa sequenza di istruzioni su insieme differenti di dati;  
@@ -1271,29 +1273,29 @@ Ci sono due schemi differenti:
 
 Entrambe le architettura lavorano su array di dati, mentre il primo utilizza tanti sommatori quanti gli elementi del vettore, il secondo utilizza un solo sommatore e un unico registro vettoriale.  
 
-### Multiprocessori  
+#### Multiprocessori  
 
 È un’architettura costituita da più CPU che condividono una memoria comune.  
 Poiché ciascuna CPU può leggere o scrivere qualsiasi zona della memoria comune, le CPU devono sincronizzarsi via software.  
 In questo caso le CPU hanno la necessità di interagire in modo così profondo che il sistema è detto fortemente accoppiato (tightly coupled).  
 
-### Multicomputer  
+#### Multicomputer  
 
 Multiprocessori con molte CPU sono difficili da realizzare, per via del problema delle connessioni di ciascuna CPU verso la memoria comune.  
 I progettisti hanno superato il problema abbandonando il concetto di memoria comune e realizzando un elevato numero di CPU interconnesse, ciascuna con la propria memoria privata.  
 Le CPU in un multicomputer sono accoppiate in modo lasco (loosely coupled) e comunicano attraverso scambi di messaggi.  
 In architetture grandi la completa interconnessione non è fattibile così sono utilizzate topologie differenti come la griglia, l’albero o l’anello.  
 
-## 2.2 - Memoria principale  
+### 2.2 - Memoria principale  
 
 La memoria è quella parte del calcolatore in cui sono depositati programmi e dati.  
 
-### Bit  
+#### Bit  
 L’unità base della memoria è il bit (BInary digiT): una variabile che assume solo due stati (0 o 1).  
 Un computer ragiona unicamente interpretando gruppi di bit, cioè comandi rappresentati da sequenze di “zero” e "uno".  
 1 byte = 8 bit.  
 
-### Indirizzi di memoria  
+#### Indirizzi di memoria  
 La memoria è organizzata in celle (o locazioni) identificabili da una posizione (l’indirizzo della cella). La cella rappresenta l’unità più piccola indirizzabile.  
 
 In ogni cella c’è lo stesso quantitativo di informazione binaria (espresso in byte).  
@@ -1308,7 +1310,7 @@ I byte possono essere raggruppati in parole.
 ---
 
 <!-- Riassunti: Architettura 5, pag. 8 -->
-# INDIRIZZAMENTO (RIASSUNTO)  
+## INDIRIZZAMENTO (RIASSUNTO)  
 
 Molte istruzioni contengono operandi e si pone il problema di come specificarne la posizione.  
 Esistono diverse modalità di indirizzamento:  
@@ -1332,11 +1334,11 @@ immediato                             valori (somma 3 e 2)
 indiretto                             posizione registro
 registro                              registro (dentro il registro ci sta il valore)
 
-# [**Assembly ARM**](https://computerscience.chemeketa.edu/armTutorial/index.html)
+## [**Assembly ARM**](https://computerscience.chemeketa.edu/armTutorial/index.html)
 
 L’Assembly ARM è il linguaggio a basso livello usato dai microprocessori ARM; esprime direttamente le istruzioni eseguite dalla CPU, fornendo il massimo controllo sull’hardware. Per esercitarsi, si possono usare emulatori online come **[VisUAL](#https://salmanarif.bitbucket.io/visual/index.html)** o **[CPUlator](https://cpulator.01xz.net/?sys=arm)** che permettono di scrivere e simulare codice ARM, visualizzando registri, memoria e bit di stato.  
 
-## 1. Formato delle istruzioni  
+### 1. Formato delle istruzioni  
 
 Ogni istruzione ARM ha generalmente la forma: `OP RD, RN, <operand2>`:  
 * **RD** (*destination register*): il registro di destinazione dove viene salvato il risultato;  
@@ -1352,7 +1354,7 @@ Qui `ADD` è l’operazione (somma), il primo operando `R1` è sia destinazione 
 
 **Riepilogo:** L’istruzione ARM ha la forma `OP RD, RN, RM/#imm`. `RD` è il registro destinazione, `RN` e `RM` i sorgenti. I valori immediati vanno preceduti da `#` (es. `#5`, `#0xA`). Ad esempio `ADD R2, R3, #1` somma 1 a `R3` e mette il risultato in `R2`.
 
-## 2. Commenti
+### 2. Commenti
 
 In ARM Assembly si possono inserire commenti per rendere il codice più leggibile. I commenti **su singola riga** iniziano con `@` (oppure `;` in alcuni assemblatori). I commenti **multilinea** si delimitano con `/* ... */`. Ad esempio:
 
@@ -1370,7 +1372,7 @@ Tutto ciò che segue `@` su quella riga viene ignorato dal processore. I comment
 
 **Riepilogo:** I commenti ARM possono essere su **singola riga** (iniziano con `@`) o **multilinea** (`/* commento */`). Servono a descrivere il funzionamento del codice senza influenzare l’esecuzione.
 
-## 3. MOV e MVN (Data Movement)
+### 3. MOV e MVN (Data Movement)
 
 Le istruzioni `MOV` e `MVN` servono a spostare o trasformare dati tra registri.
 
@@ -1396,7 +1398,7 @@ Dopo `MOV R1, #100`, il registro `R1` conterrà 100. L’istruzione `MVN` è com
 
 **Riepilogo:** `MOV RD, RN` o `MOV RD, #imm` copia i dati in `RD` (da registro o immediato). `MVN RD, RN/#imm` è simile a `MOV`, ma carica il *bitwise NOT* del valore sorgente in `RD`.
 
-## 4. Aritmetica: ADD, SUB, ADDS, SUBS
+### 4. Aritmetica: ADD, SUB, ADDS, SUBS
 
 Le istruzioni aritmetiche combinano valori con somma o sottrazione. Tutte hanno la forma `OP RD, RN, <reg/#imm>`.
 
@@ -1419,7 +1421,7 @@ Dopo `ADDS R0, R0, R0` il risultato 8 viene messo in `R0` e il bit zero (Z) rima
 
 **Riepilogo:** `ADD`/`SUB` eseguono somma e sottrazione tra registri o immediati. Gli stessi operatori con `S` (`ADDS`, `SUBS`) aggiornano i bit di condizione NZCV. Il valore immediato (preceduto da `#`) deve essere l’ultimo operando.
 
-## 5. Accesso alla memoria con LDR e STR
+### 5. Accesso alla memoria con LDR e STR
 
 ARM è un’architettura load/store: solo le istruzioni specifiche caricano e salvano dati da/verso la memoria. Le principali sono `LDR` e `STR`:
 
@@ -1444,7 +1446,7 @@ Alla fine `R1` contiene il valore letto (42) e l’istruzione `STR` salva questo
 
 **Riepilogo:** `LDR` (Load Register) legge dalla memoria usando l’indirizzo in un registro (`LDR Rdest, [Rsrc]`). `STR` (Store Register) scrive sulla memoria (`STR Rsrc, [Rdest]`). Spesso si usa `LDR Rx, =label` per ottenere l’indirizzo di una variabile.
 
-## 6. Modi di indirizzamento
+### 6. Modi di indirizzamento
 
 ARM supporta vari modi per specificare gli operandi in memoria:
 
@@ -1468,7 +1470,7 @@ Questi modi di indirizzamento sono utili per scorrere array o strutture in memor
 
 **Riepilogo:** Gli indirizzamenti comuni sono tramite registro indiretto `[Rn]`, con offset `[Rn, #imm]`, con aggiornamento pre o post (usando `!` o la sintassi post). In pratica si specifica la base (`Rn`) e facoltativamente uno spiazzamento immediato prima o dopo la memoria.
 
-## 7. Confronti e salti: CMP, CMN, B, BEQ, BGT ecc.
+### 7. Confronti e salti: CMP, CMN, B, BEQ, BGT ecc.
 
 Per il controllo di flusso si usano confronti e salti condizionali.
 
@@ -1495,7 +1497,7 @@ In questo codice, `CMP R1, #0` controlla se `R1` è zero. Se sì, `BEQ` salta a 
 
 **Riepilogo:** `CMP` e `CMN` aggiornano i flag NZCV confrontando (per sottrazione o somma). `B label` salta sempre, mentre codici condizionali come `BEQ` (equal), `BGT` (greater), `BNE` (not equal) utilizzano i flag impostati da `CMP`/`CMN` per decidere se saltare o meno.
 
-## 8. Registri speciali (SP, LR, PC)
+### 8. Registri speciali (SP, LR, PC)
 
 Alcuni registri ARM hanno ruoli particolari:
 
@@ -1513,7 +1515,7 @@ Dopo una chiamata con `BL`, il registro `LR` contiene l’indirizzo di ritorno. 
 
 **Riepilogo:** `R13 (SP)` è il puntatore di pila, `R14 (LR)` è il registro link (ritorno), e `R15 (PC)` è il program counter. `BL` salva in `LR` l’indirizzo di ritorno; per tornare, generalmente si fa `MOV PC, LR`. Il `PC` si aggiorna con il flusso normale o con i salti.
 
-## 9. Chiamate a sottoprogrammi (BL, MOV PC, LR)
+### 9. Chiamate a sottoprogrammi (BL, MOV PC, LR)
 
 Le subroutine si invocano con `BL` (Branch with Link), che salta a un’etichetta e salva l’indirizzo di ritorno in `LR`. Alla fine della subroutine si ritorna con `MOV PC, LR`.
 
@@ -1535,7 +1537,7 @@ In questo esempio, eseguendo `BL funzione`, il processore salta all’etichetta 
 
 **Riepilogo:** `BL label` chiama una subroutine (aggiornando `LR` con l’indirizzo di ritorno). All’interno della subroutine si recupera l’esecuzione originale con `MOV PC, LR`. `LR` funge da registro di link per tornare dal chiamante.
 
-## 10. Gestione della pila (PUSH/POP con STM/LDM)
+### 10. Gestione della pila (PUSH/POP con STM/LDM)
 
 La pila (stack) è usata per salvare temporaneamente registri o variabili locali. In ARM, non esistono istruzioni **PUSH/POP** native nella versione ARMv7 base, ma si usano le istruzioni **STMFD**/ **LDMFD** (store multiple/full descending) o i loro alias **PUSH/POP** in alcuni assemblatori.
 
@@ -1554,7 +1556,7 @@ Qui `SP!` indica che `SP` viene aggiornato (pre-decremento o post-incremento). I
 
 **Riepilogo:** Lo stack (gestito dal registro `SP`) utilizza le istruzioni di memoria multiple: `STMFD SP!, {...}` (push) scrive vari registri sulla pila, `LDMFD SP!, {...}` (pop) li legge. In pratica, `PUSH {Rlist}` e `POP {Rlist}` sono alias per queste istruzioni, semplificando il salvataggio temporaneo dei registri.
 
-## 11. Esercizio: Somma degli elementi di un array
+### 11. Esercizio: Somma degli elementi di un array
 
 **Obiettivo:** Scrivere un programma ARM che sommi tutti gli elementi di un array di interi e memorizzi il risultato in memoria.
 
@@ -1602,9 +1604,9 @@ Ogni codice dovrebbe iniziare con:
 .global _start     @declare _start symbol to be globally visible
 _start:            @identify this location as entry point for the program
 ```  
-## 1. Basics  
+### 1. Basics  
 
-### 1.1. Instruction format  
+#### 1.1. Instruction format  
 
 ARM instructions generally take the form:  
 ```x86asm  
@@ -1627,7 +1629,7 @@ ADD   r5, r5, #0b11111111
 ADD   r6, r6, #'A'
 ```
 
-#### 1.1.1. Comments  
+##### 1.1.1. Comments  
 
 Multiline comments are surrounded by `/* */` and single line comments start with `@`:  
 ```x86asm  
@@ -1640,7 +1642,7 @@ ADD   r1, r2, #10  @line comment
 ADD   r1, r2, #10
 ```  
 
-### 1.2. Data Movement  
+#### 1.2. Data Movement  
 
 The MOV and MVN instruction copy (move) data from into registers.
 ```x86asm  
@@ -1679,13 +1681,13 @@ MVN   r4, r3        @ r4 = 1111 1111 ... 0101 1100
 MVN   r5, #0xF      @ r5 = 1111 1111 ... 0000
 ```  
 
-### 1.3. Arithmetic  
+#### 1.3. Arithmetic  
 
 Arithmetic instructions combine two values via addition or subtraction, placing the results into a destination register.  
 > **Tip**
 > All of the arithmetic instructions only support an immediate value as the last parameter.
 
-# Programma
+## Programma
 
 - **INTRODUZIONE SULLE ARCHITETTURE** (Cap 1 – Architettura dei calcolatori)
   - Dominio digitale e analogico
@@ -1827,7 +1829,7 @@ Arithmetic instructions combine two values via addition or subtraction, placing 
   - MULTICOMPUTER
   - VIRTUALIZZAZIONE
 
-# Domande per l'autovalutazione  
+## Domande per l'autovalutazione  
 
 **ARCHITETTURE DI CALCOLATORI**
 1) Il teorema del campionamento assicura che l'approssimazione discreta di un segnale analogico a banda limitata, è senza perdita di informazione utile se...
@@ -1925,7 +1927,7 @@ Suggerimento: descrivere prototipo, pre-condizioni e post-condizioni prima dell'
 95) Dato un valore intero X calcolare il suo fattoriale
 96) Dati X e Y interi calcolare X^Y
 
-# Strumenti software  
+## Strumenti software  
 
 TOOL PER ALGEBRA DI BOOLE
 https://www.dcode.fr/boolean-expressions-calculator
@@ -1950,7 +1952,7 @@ https://www2.keil.com/stmicroelectronics-stm32/mdk
 GNU
 https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads
 
-# Bibliografia:
+## Bibliografia:
 
 - *Architettura dei calcolatori. Un approccio strutturale* - Tanenbaum (6ed);
 - ***I moderni sistemi operativi.* - Tanenbaum (5ed)**;

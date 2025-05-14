@@ -1,4 +1,8 @@
-# Indice
+<img src="./img/git/1_git.png" alt="Logo Git" title="Logo Git" width="34px" style="float:left; margin-right:12px;">
+
+# GIT
+
+## Indice
 
 - [Introduzione](#introduzione)
   - [I Tre Stati](#i-tre-stati)
@@ -38,9 +42,7 @@
 
 <!-- Completare Indice -->
 
-<img src="./img/git/1_git.png" alt="Logo Git" title="Logo Git" width="34px" style="float:left; margin-right:12px;">
-
-# Introduzione
+## Introduzione
 
 Un Sistema di Controllo Versione (**VCS**, _Version Control System_) registra nel tempo le modifiche apportate a un file o a un insieme di file, permettendo di ripristinare versioni precedenti in qualsiasi momento. Utilizzarne uno è fondamentale per mantenere la cronologia completa delle modifiche e garantire un recupero rapido in caso di errori.  
 Tra questi, **Git**, creato da Linus Torvalds nel 2005, è ad oggi lo standard de facto. È un sistema di controllo versione <u>distribuito</u>, il che significa che ogni sviluppatore possiede una copia completa del progetto, comprensiva della sua cronologia. Questa caratteristica offre:  
@@ -113,7 +115,7 @@ git config --global credential.helper wincred      # Salva in modo permanente su
 git config --global credential.helper osxkeychain  # Salva in modo permanente su MacOS
 ```
 
-# Elenco comandi utili
+## Elenco comandi utili
 
 > **PREMESSA**: Posizionarsi nella cartella dove lavorerai con Git, usando `cd`.
 
@@ -411,7 +413,7 @@ git config --global credential.helper osxkeychain  # Salva in modo permanente su
   3. Salva ed esci; Git ti guiderà nel riscrivere i messaggi o risolvere conflitti. In particolare, se hai modificato un solo file e ti interessano solo le sue modifiche: copiale ed incollale; fai un `git add <file>`; poi per due volte `git rebase --continue` per confermare tutte le operazioni.  
   4. Alla fine avrai una serie di nuovi commit con nuovi hash. Per applicare queste modifiche al remoto usa `git push --force`.  
 
-# Connect to a `remote` server  
+## Connect to a `remote` server  
 
 Come [accennato prima](#distinzione-tra-git-e-github), per collaborare a qualsiasi progetto necessitiamo di piattaforme di hosting dei repository, come GitHub. I **repository remoti** sono quindi versioni del progetto ospitate da queste piattafome.  
 
@@ -503,7 +505,7 @@ Nei remoti si possono eseguire comandi come:
   git fetch --all                   # Scarica da tutti i remoti configurati
   ```  
 
-# **Alias** in Git  
+## **Alias** in Git  
 
 Gli alias in Git permettono di abbreviare i comandi più utilizzati, rendendo il lavoro più rapido ed efficiente. Invece di digitare l'intero comando, puoi configurare una scorciatoia personalizzata. Gli alias non modificano il comportamento di Git, ma semplicemente sostituiscono il comando originale con quello abbreviato. 
 
@@ -519,7 +521,7 @@ git last
 git config --global --unset alias.<nome_alias>    # Per eliminare un alias
 ``` 
 
-# Git Branching 
+## Git Branching 
 
 I **branch** (rami) in Git sono fondamentali per gestire lo sviluppo parallelo di un progetto. Ogni branch rappresenta una linea di sviluppo indipendente, permettendo di lavorare su nuove funzionalità, correzioni di bug o esperimenti senza influenzare il codice principale.  
 Il branch `master` (o `main`) è quello di default quando crei un repository.  
@@ -562,7 +564,7 @@ Ad **<span style="color: #529E72;">esempio</span>**, immagina un progetto con i 
 
 Quando una funzionalità o un bug fix è pronto, viene testato e unito a `develop`. Una volta che `develop` è stabile, viene unito a `master`. Questo tipo di workflow ha il vantaggio di mantenere una chiara separazione tra codice stabile e codice in sviluppo, facilitano l'integrazione di modifiche da branch secondari.  
 
-# Riassunto  
+## Riassunto  
 
 <!-- Elencare qui quindi le azioni da fare per instanziare un progetto in Git. -->
 
@@ -594,7 +596,7 @@ git config --global --add safe.directory /storage/emulated/0/Download/uni
 <img src="./img/git/4_git_cheat_sheet.jpg" alt="Comandi principali di Git" title="Comandi principali di Git" width="50%" style="display:block; margin-left:auto; margin-right:auto; padding: 1%;">  
 </details><br> 
 
-# Bibliografia
+## Bibliografia
 
 - **[Pro Git - Scott Chacon, Ben Straub (until pag. 91)](https://git-scm.com/book/it/v2)**;
 - **[Introduction to Git in VS Code](https://code.visualstudio.com/docs/sourcecontrol/intro-to-git)**;
