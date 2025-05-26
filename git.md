@@ -1,4 +1,4 @@
-<img src="./img/git/1_git.png" alt="Logo Git" title="Logo Git" width="34px" style="float:left; margin-right:12px;">
+<img src="./img/git/1_git.png" alt="Logo Git" title="Logo Git" width="34px" height=auto style="float:left; margin-right:12px;">
 
 # GIT
 

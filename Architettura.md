@@ -7,7 +7,7 @@ COLORI:
 - GIALLO: #FDDC5C.
 -->
 
-<img src="./img/Architettura/001-Architettura.jpg" alt="Architettura dei Sistemi di Elaborazione" title="Architettura dei Sistemi di Elaborazione" width="34px" style="float:left; margin-right:12px;">  
+<img src="./img/Architettura/001-Architettura.jpg" alt="Architettura dei Sistemi di Elaborazione" title="Architettura dei Sistemi di Elaborazione" width="34px" height=auto style="float:left; margin-right:12px;">  
 
 # Architettura dei Sistemi di Elaborazione  
 

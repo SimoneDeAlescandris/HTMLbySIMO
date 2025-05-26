@@ -1,10 +1,17 @@
-# CSS
+<!-- 
+COLORI:
+- ROSSO: #DF5452;
+- GRIGIO: #252525;
+- BLU: #379AD3;
+- VERDE: #529E72;
+- GIALLO: #FDDC5C.
+-->
 
-<img src="../img/Web/3_CSS3.png" alt="Architettura dei Sistemi di Elaborazione" title="Architettura dei Sistemi di Elaborazione" width="34px" style="float:left; margin-right:12px;">  
+<img src="../img/Web/3_CSS3.png" alt="Architettura dei Sistemi di Elaborazione" title="Architettura dei Sistemi di Elaborazione" width="24px" height=auto style="float:left; margin-right:12px;">  
 
-## CSS
+# **CSS**
 
-È un linguaggio di styiling che consente di modificare l'aspetto e la formattazione della pagina web.  
+Il <abbr title="Cascading Style Sheets">CSS</abbr> è il linguaggio di styiling standard per modificare l'aspetto e la formattazione della pagina web.  
 
 ```css
 p { /* Selettore di elemento */
@@ -18,11 +25,7 @@ p { /* Selettore di elemento */
 }
 ```
 
--CSS
-
-cascading style sheets
-standard per definire come il browser deve visualizzare la struttura del codice html.
-le regole si applicano in modo generale alla pagina , la parte del codice nelle parentesi si chiama dichiarazione
+Le regole si applicano in modo generale alla pagina , la parte del codice nelle parentesi si chiama dichiarazione
 
 selettori in css:
 Possiamo selezionare tutti gli elementi presenti nella pagina html , semplicemente anteponendo il tag della parte a cui facciamo riferimento
@@ -33,7 +36,7 @@ esempio: h1 class="center" , si può usare la stessa classe per più elementi.
 Il nome della clas viene preceduto da un punto --> .class.
 Le classi si possono concatenare con il selettore dell'elemento --> p.center
 
-Selettore id , ci permette di identificare in modo univoco un elemento --> <p id"para1".
+Selettore id , ci permette di identificare in modo univoco un elemento --> <p id="para1".
 Il nome dell'id deve essere univoco!!!!
 si può poi chiamare nel css con #para1 per attribuire uno stile specifico.
 
@@ -180,6 +183,7 @@ Per far apparire un elemento al passaggio del mouse, si può usare il selettore 
 
 Esempio:
 
+```css
 .hidden-box {
   display: none;
 }
@@ -187,32 +191,33 @@ Esempio:
 .container:hover .hidden-box {
   display: block;
 }
+```
 
--Flexbox (display: flex)
+-Flexbox (`display: flex`)
 Flexbox è un potente sistema per creare layout monodimensionali (su riga oppure su colonna).
 
 -Caratteristiche principali:
-Si applica all’elemento contenitore (display: flex) e agisce sui suoi figli diretti.
+Si applica all’elemento contenitore (`display: flex`) e agisce sui suoi figli diretti.
 
-Di default, gli elementi si dispongono in riga (flex-direction: row).
+Di default, gli elementi si dispongono in riga (`flex-direction: row`).
 
 Per cambiare orientamento, si può usare:
 
-flex-direction: column; // disposizione verticale
+`flex-direction: column; // disposizione verticale`
 
 -Proprietà utili:
-flex-wrap: wrap; → fa andare a capo gli elementi se non c’è spazio sufficiente.
+`flex-wrap: wrap;` → fa andare a capo gli elementi se non c’è spazio sufficiente.
 
-justify-content: → allinea gli elementi lungo l’asse principale (es. da sinistra a destra).
+`justify-content:` → allinea gli elementi lungo l’asse principale (es. da sinistra a destra).
 
 
 
 Valori comuni:
 
-flex-start, flex-end, center, space-between, space-around, space-evenly.
+`flex-start`, `flex-end`, `center`, `space-between`, `space-around`, `space-evenly`.
 
-align-items: → allinea gli elementi lungo l’asse trasversale (perpendicolare rispetto a justify-content).
-Valori: stretch, center, flex-start, flex-end, baseline.
+`align-items`: → allinea gli elementi lungo l’asse trasversale (perpendicolare rispetto a justify-content).
+Valori: `stretch`, `center`, flex-start, flex-end, baseline.
 
 align-content: → simile a align-items, ma agisce quando c’è wrapping, ovvero su più righe o colonne.
 
@@ -237,7 +242,7 @@ Buona base per la creazione di siti responsive.
 Può causare problemi di leggibilità o impaginazione su schermi molto piccoli.
 
 -Esempio:
-
+```css
 .container {
   display: flex;
 }
@@ -245,6 +250,7 @@ Può causare problemi di leggibilità o impaginazione su schermi molto piccoli.
 .box {
   width: 33.33%; /* 3 colonne = 100% */
 }
+```
 
 2. Layout Fisso
 I contenuti hanno una larghezza predefinita (in pixel) che non cambia al variare della finestra del browser.
@@ -260,12 +266,12 @@ Non si adatta ai dispositivi mobili o agli schermi piccoli.
 Può generare scroll orizzontali indesiderati.
 
 -Esempio:
-
+```css
 .container {
   width: 960px;
   margin: 0 auto;
 }
-
+```
 -Siti Responsive
 Un sito è responsive quando si adatta a diverse dimensioni di schermo usando lo stesso HTML, ma CSS differenziato.
 
@@ -288,12 +294,13 @@ Serve per informare il browser che deve adattare la larghezza della pagina a que
 Permettono di applicare regole CSS condizionali, in base alla dimensione o caratteristiche del dispositivo.
 
 Sintassi:
-
+```css
 @media only screen and (max-width: 768px) {
   body {
     background-color: lightblue;
   }
 }
+```
 Parti di una media query:
 media type: ad esempio screen o print.
 
@@ -319,7 +326,7 @@ Mobile First: si scrivono le regole CSS per gli schermi piccoli, e si usano medi
 Desktop First: si parte da layout grandi e si adatta con max-width a schermi più piccoli.
 
 -Esempio Mobile First:
-
+```css
 .element {
   font-size: 14px;
 }
@@ -329,12 +336,12 @@ Desktop First: si parte da layout grandi e si adatta con max-width a schermi pi�
     font-size: 18px;
   }
 }
-
+```
 -CSS Variables (Variabili CSS)
 Le variabili CSS permettono di riutilizzare valori (es. colori, dimensioni, font, ecc.) in più punti del foglio di stile, mantenendo il codice più ordinato, leggibile e facilmente modificabile.
 
 -Sintassi base
-
+```css
 :root {
   --blue: #3498db; /* Definizione variabile globale */
 }
@@ -342,19 +349,19 @@ Le variabili CSS permettono di riutilizzare valori (es. colori, dimensioni, font
 body {
   background-color: var(--blue); /* Utilizzo della variabile */
 }
-
+```
 -Note importanti:
 Le variabili CSS iniziano sempre con – e vengono richiamate con var(--nome).
 
 Il selettore :root è la radice dell’albero DOM, quindi le variabili dichiarate lì sono globali.
 
 Possiamo anche definire variabili locali all’interno di un selettore:
-
+```css
 .box {
   --padding: 10px;
 }
 Tutti i discendenti di .box potranno usare var(--padding).
-
+```
 -Valori di fallback (default):
 È possibile specificare un valore di default da usare se la variabile non è definita:
 
@@ -422,6 +429,299 @@ Fissi per schermi medi e grandi (.container)
 CSS Grid è ottimo quando vuoi controllo totale e layout complessi.
 
 Bootstrap è perfetto se vuoi andare veloce, seguire uno standard già pronto, e non hai bisogno di layout troppo articolati.
+
+---
+---
+---
+
+## Appunti delle lezioni
+
+Dopo aver visto i tipi di stili ciò che a noi interessa sono i selettori
+3 tipologie di selettori
+
+-selettore di tag, che lavoro sul tag specificato, quindi ogni tag di quel tipo prende quelle proprietà
+-selettore di classe che identifica una classe di elementi, ciò ci consente di lavorare su più tag che appartengono a tale class
+due modalità di definizione .class oppure tag.class
+
+nel file .css
+.class{
+    proprietà1:valore1;
+    proprietà2:valore2;
+    -------------------
+}
+
+-selettore id=attributo univoco per quel elemento seleziona l'elemento con quel id, possiamo dare una qualsiasi stringa come id
+come sintassi nel css bisogna usare #id
+esempio 
+<p id="ciao">Questo paragrafo</p>
+
+nel css
+#ciao{  proprietà1:valore1;
+        proprietà2:valore2;
+        -------------------
+}
+
+L'id si usa nei casi strettamente necessari, all'esame "fate come vi pare" cit Loreti.
+
+
+Raggruppamento selettore
+
+Spesso possiamo Raggruppare gli selettori con le stesse proprietà
+usando la virgola 
+esempio 
+h1{
+  color:black;    
+}
+
+p{
+    color: black;
+}
+
+possiamo fare direttamente, (scrivendo meno)
+
+h1, p{
+    color:black;
+}
+
+
+Relazione DOM (Document Object Model)
+
+Bisogna iniziare ad avere in testa il fatto che i tag sono rappresentati come un albero radicato
+con <html> come root e figli <head> <body>
+a loro volta head e body hanno dei figli
+Valgono proprietà degli alberi come figli, fratelli, un padre etc...
+
+A cosa serve?
+In css per ereditare oppure assegnare specifiche proprietà a paricolari nodi figli o fratelli 
+Servirà anche in JavaScript....
+
+Come creare selettori che lavorano sul DOM????
+
+1 selettori per discendenti (lo spazio)
+
+    header p{
+        proprietà:valori;
+        ----------------
+    }
+dice tutti i discendenti del header che hanno il tag p (ricevono quelle proprietà)
+Conviene leggere da destra verso sinistra
+tutti i paragrafi discendenti dal header ricevono quelle proprietà.
+
+
+2 Selettore per figlio (>)
+
+div >p {
+    proprietà:valore;
+}
+Dice tutti i p figli (child) del tag div...
+Spesso si usa nelle tabelle
+
+
+----- i ultimi due successivi vederli da soli, il prof non li ha fatto 
+3 Selettore per frattelli successivi (+)
+
+4 Selettore per fratelli generici
+
+
+
+Le pseudo classi, vengono utilizzate per definire uno stato speciale di un elemento 
+spesso si usano nei tag a oppure img 
+
+sintassi
+
+selettore:pseudo-classe{ 
+    proprietà: valori;
+}
+
+esistono pseudo-classi già definite 
+
+:root:only-child
+:visited
+:hover:
+:focus
+:nth-child()  // questa prende un parametro
+:nth-last-child() // questa prende un parametro
+-------
+
+Vedere elenco delle pseudo-classi, non le faremo tutte.
+
+
+I pseudo-elementi vengono utilizzati per dare uno stile alle parti specifiche di un elemento
+sintassi
+selettore::pseudo-elemento{
+    proprietà: valori;
+
+}
+
+utili perchè altrimenti dovrei usare tag annidati
+
+trasformazione contenuti degli elementi, 
+
+::after
+::before 
+::first-letter // proprietà sulla prima lettera del selettore
+::first-line
+
+
+--Selettore per attributi 
+
+sintassi
+
+[attributo ] {
+    proprietà:valori;
+}
+
+
+posso speficifare il valore/i che voglio modificare
+
+[attributo=valore]{
+    proprietà:valori;
+}
+
+due sintassi o  come sopra oppure aggiunendo il selettore prima dell'attributo
+
+esempio
+
+img[alt]{
+    background-color: black;
+}
+
+oppure
+
+[alt]{
+    background-color: black;
+}
+
+Qualche volta si usa dipende dalle nostre necessità.
+
+
+------------
+Ereditarietà
+
+Alcune proprietà sono ereditate dai discendenti !!!!!!!!!
+
+Spesso si hanno dentro i tag annidati, specialmente se i tag esterni hanno delle proprietà.
+
+I tag spaziatura non ereditano 
+
+Vedere lista di proprietà erediate, a noi interssa quelle proprietà in rosso che useremo
+
+
+conflitti nella dichiarazione.
+
+ad esempio due dichiarazioni di un tag, nella stessa pagina,  chi vince??
+
+p{
+    color: black;
+    background-color:yellow;
+}
+
+--
+p{
+    color:red;
+}
+
+
+In maggior parte dei casi vince la seconda
+attenzione solo le proprietà sovrascritte vincono
+il background color rimane...
+
+tale situazione meglio evitare, perchè il browser distribuisce su più file i stili
+vedere nella parte style sul browser. 
+
+comunque non si usa.
+
+
+Ma tra un id, una classe e un selettore chi vince ??
+
+p{
+    proprietà:valore;
+}
+
+#param{
+    proprietà:valore;
+}
+.red{
+    proprietà:valore;
+}
+
+
+<p class="red">testo paragrafo</p>
+
+<p id="par3">testo paragrafo2</p>
+
+
+Il selettore elemento è meno speficico
+Il selettore di classe è più specifico del selettore elemento 
+Il selettore di tipo id è il più forte del selettore di classe
+
+Quindi dove c'è collisione tra id, class e elemento ora sappiamo chi vince.
+
+
+
+parola chiave !important
+se dichiaro una proprietà come !important allora essa diventa la più importante di tutti
+i selettori id, classe, elemento 
+
+
+p{
+    color:yellow !important;
+}
+
+#param{
+    color:green;
+}
+.red{
+    color:red;
+}
+
+In questo caso anche se il selettore di elemento è meno importante, la
+proprietà del selettore p diventa la più importante. 
+
+
+Il cascade è un algoritmo che definisce come combinare valori di proprietà provenienti da fonti esterne
+i stili sono 
+
+-browser  user-agent stylesheets
+-author  quello che scriviamo noi
+-reader  utenti del browser, aggiungere estensioni 
+
+Per ogni sito abbiamo sempre due stili browser e author
+
+Le regole che vincono sono le nostre (author)
+
+
+Caclolo delle specificità (può chiedere all'esame)
+
+Per ogni selettore ci sono 4 numeri [a,b,c,d]
+
+calcolo valori
+
+a--- selettore in line 1 oppure no 0
+b--- Numero selettori id
+c--- Numero di selettori di classe, attributo o pseudo-classi
+d--- Numero di selettori elemento o psudo-elementi 
+
+
+esempi
+
+*{}   ---> specificità = [0,0,0,0]
+ul li{}  -----> specificità = [0,0,0,2]
+
+li.red.level{} (definito come una classe dentro l'altra)--->  specificità= [0,0,2,1].
+
+
+idea partire sempre dal conteggio elementi (d)
+poi calcolare numero elementi classe, attributo o pseudo-classi (c)
+
+poi numero selettore id (b)
+infine a.
+
+---
+---
+---
+
+[Proprietà CSS del div](https://www.w3schools.com/html/html_div.asp)
 
 ---
 ---
