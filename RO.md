@@ -12,7 +12,18 @@ COLORI:
 ## Indice  
 
 - [Introduzione](#introduzione)  
-  - [MODELLi della Ricerca Operativa](#modelli-della-ricerca-operativa)
+  - Formulazione di problemi decisionali in termini di programmazione matematica.
+  - ~~Classificazione dei problemi di programmazione matematica~~.
+  - Teoria della programmazione lineare.
+  - [MODELLI della Ricerca Operativa](#modelli-della-ricerca-operativa)
+- [La Programmazione Matematica](#la-programmazione-matematica)
+- [Il metodo del **SIMPLESSO PRIMALE**](#il-metodo-del-simplesso-primale)
+- Il metodo delle VARIABILI ARTIFICIALI.
+- Teoria della dualità nella programmazione lineare.
+- Il metodo del **SIMPLESSO DUALE**.
+- Il metodo PRIMALE-DUALE.
+- Il linguaggio AMPL.
+- La libreria di algoritmi CPLEX.
 - [Bibliografia](#bibliografia)  
 
 ## Introduzione  
@@ -20,7 +31,7 @@ COLORI:
 > "*OR can help you in make better decision and it is clear that there are many, many people and companies out there in the real world that need to make better decision*."  
 > - J. E. Bearsley  
 
-<div style="background-color: #252525; border-radius: 10px; padding: 15px; box-shadow: 0.5px 0.5px 2px black; margin-bottom: 1em;">  
+<div style="background-color: #252525; color:white; border-radius: 10px; padding: 15px; box-shadow: 0.5px 0.5px 2px black; margin-bottom: 1em;">  
 
 La <abbr style="font-weight:bold;" title="dall’inglese Operational Research, OR, o Management Science, MS, o Decision Science, DS">Ricerca Operativa</abbr> si occupa di studiare e <u>gestire i processi decisionali</u> (com’era intuibile dal nome) per valutarne le conseguenze e individuare le decisioni che ottimizzano le loro prestazioni attraverso l’applicazione del metodo scientifico.  
 
@@ -119,10 +130,6 @@ Un metodo per arrivare alla *miglior* soluzione *possibile* è l’<span style="
 - Sviluppo di un **metodo** matematico che permetta di determinare una soluzione ottima.  
 </div>  
 
-Un ruolo di fondamentale importanza lo avrà lo studio dei <span style="font-style:italic; font-weight:bold; background-color:#FDDC5C; color:black; padding:2px; border-radius: 4px;">problemi di Ottimizzazione</span>, nei quali si desidera minimizzare o massimizzare una funzione reale, le cui variabili sono vincolate ad appartenere ad una insieme prefissato che è descritto attraverso un numero finito di disuguaglianze o uguaglianze.  
-
-$\small \text{problema di Ottimizzazione} = \begin{cases} \text{min/max} \ f(x) \\ x \in S \end{cases}$
-
 L'approccio modellistico prevede **5 fasi**:  
 1. ***ANALISI DELLA STRUTTURA DEL PROBLEMA***, per invididuarne i legami logico-funzionali e gli obiettivi;  
 2. ***FORMULAZIONE DEL MODELLO***, in cui si descrivono in termini matematici le caratteristiche principali del problema: DATI, VARIABILI, VINCOLI e OBIETTIVO;  
@@ -151,80 +158,88 @@ Nel seguito analizzeremo i modelli più comunemente usati: determinisici e stati
   Una soluzione che rispetti tutti i vincoli si dice *soluzione ammissibile* e l'insieme di queste ultime costituisce la *regione ammissibile* del modello.  
 - **obiettivo** da minimizzare (es. costi) o massimizzare (es. profitto).  
 
-<!-- 
-Sono a pag. 12/26 della Dispensa della Sapienza `cap0-1-2`.
-Sono a pag. 11/46 della slide `cap0`.
--->
+## La Programmazione Matematica
 
-<details>
-<summary style="font-weight:bold; font-size:24;">TODO</summary>
+Un ruolo di fondamentale importanza lo avrà lo studio dei <span style="font-style:italic; font-weight:bold; background-color:#FDDC5C; color:black; padding:2px; border-radius: 4px;">problemi di Ottimizzazione</span>, nei quali si desidera minimizzare o massimizzare una funzione reale, le cui variabili sono vincolate ad appartenere ad una insieme prefissato che è descritto attraverso un numero finito di disuguaglianze o uguaglianze.  
 
-### Programma
+$\small \text{problema di Ottimizzazione} = \begin{cases} \text{min/max} \ f(x) \\ x \in S \end{cases}$  
 
-1. Formulazione di problemi decisionali in termini di programmazione matematica.
-2. Classificazione dei problemi di programmazione matematica.
-3. Teoria della programmazione lineare.
-4. Il metodo del simplesso primale.
-5. Il metodo delle variabili articificiali.
-6. Teoria della dualità nella programmazione lineare.
-7. Il metodo del simplesso duale.
-8. Il metodo primale-duale.
-9. Il linguaggio AMPL.
-10. La libreria di algoritmi CPLEX.
+Si parlerà indifferentemente di problemi di massimo o di minimo in quanto vale $\small \min_ {x \in S} \ f(x) = - \max_ {x \in S} \ (-f(x))$.  
 
-Da uno studente viene il **metodo del simplesso**. Un prof un giorno aveva fatto un domanda assurda a degli studenti, ma uno di loro riuscì a rivolvere il problema attraverso un procedimento che il prof poi ha provato a rubargli l’idea ma lui riuscì ad evitarlo e ora questo metodo lo dobbiamo allo studente. Sposta il problema dal calcolo dell’area ad esempio al calcolo dei vertici.
-    
-Problema che nacque negli anni 70 è che il numero di vertici di quel poliedro poteva essere esponenziale, nel numero di variabili o nei vincoli del sistema.  
-Qualche anno dopo, nel 78, sempre dalla scuola russa, un altro ricercatore (Kian Chan) propose un algoritmo che risolvere in tempo polinomiale ($\small n^2$) il numero di vertici del problemi (è esponenziale anche questo algoritmo, anche se di meno). **Metodo dell’Elissoide** (metodo esclusivamente matematica che noi non tratteremo).
-  
----
-  
-L’obiettivo è quello di minimizzare l’$\small f(x)$, quindi devo trovare la q all’interno di quel fascio di rette quella **ammissibile** che avrà la q più piccola.
-
-Devo trovare il modo di cambiare il punto di vista del mio problema per passare da un numero infinito di soluzioni valide, ad un numero finito.
-  
+La funzione reale (di $\small n$ variabili reali) $\tiny f$ viene chiamata *funzione obiettivo* ($\small f(x_1, x_2, \dots, x_n)$) e l'insieme $\small S$ è l'*insieme ammissibile* (delle possibili soluzioni del problema). Un punto $\small x \in S$ si chiama *soluzione ammissibile*.  
+L'insieme ammissibile $\small S$ è un sottoinsieme di $\small \mathbb{R}^n$ e quindi $\small x = (x_1, x_2, \dots, x_n)^T$ è una variabile vettoriale $\small n$-dimensionale.  
 
 ---
 
-La nostra esigenza è quella di capire…
+Si riportano di seguito alcune definizioni fondamentali riguardanti i problemi di Ottimizzazione (PO):  
 
-Iniziamo col definire la **forma standard della programmazione lineare**. Lineare perché nel primo approccio al problema mi metto in un contesto lineare, assumendo che la mia funzione sia un polinomio di primo grado e tutte le altre funzioni siano problemi di primo grado.
-Questa è una forma del problema con $\small A$ la matrice dei coefficienti che abbiamo, $\small x$ la … e $\small b$ il vettore, io li posso scrivere con l’operatore di uguaglianza, e le variabili devono essere tutte maggiori o uguali di 0:
-$\small \text{forma standard della programmazion lineare} = \begin{cases} Ax = b \\ x  \ge 0 \end{cases}$.
+- Il PO si dice *inammissibile* se $\small S = \emptyset$, cioè se non esistono soluzioni ammissibili.  
+- Il PO si dice *illimitato* (inferiormente) se comunque scelto un valore $\small M > 0$ esiste un punto $\small x \in S$ tale che $\small f(x) < -M$.  
+- Il PO ammette una *soluzione ottima* (finita) (o *minimo di globale*) se esiste un $\small x^* \in S$ tale che $\small f(x^*) \le f(x)$ per ogni $\small x \in S$.  
+Il corrispondente valore $\small f(x^*)$ si dice *valore ottimo*.  
+- $\small b_i$ è il *valore noto*.  
 
-Prendiamo il primo vincolo: $\small x_1 + x_2 \le 2$.
-Se volessi trasformare il mio vincolo con il simbolo di uguaglianza, potremmo scrivere…
+<div style="background-color: #252525; color:white; border-radius: 10px; padding: 15px; box-shadow: 0.5px 0.5px 2px black; margin-bottom: 1em;">  
 
-- $\small x_1 + x_2 \le (-\infty, 2)$. Soluzione "valida", ma a livello rappresentativo dovrei avere infiniti punti, e quindi la soluzione non è valida.
-- $\small \begin{cases} x_1 + x_2 = 2 \\ x  \ge x_1-2x_2=1 \end{cases}$. Soluzione corretta, ma come ci arriviamo attraverso una serie di passaggi?
-Quindi come se da un commerciante, andiamo a pagare un prodotto 1.5€, ma diamo 2€, ovviamente ci darà un resto perché il costo del prodotto è minore o uguale dei soldi che abbiamo forniti.
-  
-  $\small S$ è la variabile di Slack (mancanza), ovvero quello che manca.
-  Se io dessi 1.5€, allora S = 0 e x sarebbe positivo.
-  Se il costo fosse maggiore invece della mia disponibilità, non avrei più uno Slack, ma un surpluss, tipo 2.5€, costa più di quel che ho.
-  
+Ogni disuguaglianza $\small g_i(x) \ge b_i$ prende il nome di *vincolo* e l'insieme ammissibile è formato da tutti quei punti che sono soluzione del sistema di disuguaglianze  
 
-La **forma standard** sarebbe $\small \text{min } x_1 + x_2 = 2 \text{ è} \begin{cases} x_1 + x_2 = 2 \\ x_1-2x_2-S_2 \ge 0 \end{cases}$, con $\small x = [x_{12}, x_{24}, x_{45}, x_{13}, x_{34}]$ (in cui $\small x_{12} \in \{0, 1\}$.
+$\small \begin{cases} g_1(x) \ge b_1 \\ g_2(x) \ge b_2 \\ \quad \ \dots \\ g_i(x) \ge b_i \end{cases}$  
 
-Una soluzione scritta in forma standard è di base ammissibile se presenta le condizioni sotto riportate.
+Ovviamente, le disuguaglianze possono essere anche di altro tipo e si può sempre trasformare un vincolo da $\small g_i(x) \le b_i$ a $\small -g_i(x) \ge -b_i$.  
+</div>
 
-Definizione di **BASE AMMISSIBILE**: 
+Quindi, ritornando alla defizione iniziale, un problema di ottimizzazione (o di Programmazione Matematica) si può riscrivere nella forma  
 
-- di *base* vuol dire che io posso dividere le componenti del vettore in due sottoinsiemi di componenti.
-  - Componenti in base, sono tutte formate da componenti positive e sono in numero pari alle righe di $\small A$.
-  - Componenti non in base: sono tutte nulle, pari a 0.
-  
-  Viene specificata la parola "di base" nella soluzione per enfatizzare …
-    
-- *ammissibile* vuol dire
+$\small \begin{cases} \text{min} \ f(x) \\ g_i(x) \ge b_i, & i = 1, \ \dots, m \end{cases}$  
 
 ---
 
-Bogdan consiglia di prepararsi cercando su YT video sul *metodo del simplesso*, il *simplesso a due fasi* e il *simplesso duale*. I termini noti gli metti in colonna sulla sinistra, la funzione obiettivo la metti come prima riga e tutti i vincoli li metti come altri righe.  
-</details>
+I problemi di Programmazione Matematica si possono classificare in base alla *struttura delle funzioni che li definiscono*:  
+
+- problemi di **PROGRAMMAZIONE LINEARE** (PL)  
+  La funzione obiettivo e TUTTE le funzioni che definiscono i vincoli sono *lineari*;  
+- problemi di **PROGRAMMAZIONE NON LINEARE** (PNL).  
+
+Formalizziamo infine alcuni semplici concetti dei vincoli in un problema di programmazione matematica:  
+
+<div style="background-color: #252525; color:white; border-radius: 10px; padding: 15px; box-shadow: 0.5px 0.5px 2px black; margin-bottom: 1em;">  
+
+Un vincolo del tipo $\small g_i(x) \ge b_i$ si dice:  
+
+- ***soddisfatto*** in un punto $\small \bar{x}$ se $\small g(\bar{x}) \ge b$;  
+- ***violato*** in un punto $\small \bar{x}$ se $\small g(\bar{x}) < b$;  
+- ***attivo*** in un punto $\small \bar{x}$ se $\small g(\bar{x}) = b$;  
+- ***ridondante*** se con al sua *eliminazione l'insieme rimane immutato*.  
+</div>
+
+Una soluzione è di **BASE AMMISSIBILE** se:  
+- è scritta in forma standard;  
+- è di *base*: tutti i suoi componenti sono positivi e sono tanti quante le restrizioni di uguaglianze, cioè le righe del tableau;  
+- è ammissibile: rispetta tutti i vincoli.  
+
+## Il metodo del SIMPLESSO PRIMALE  
+
+I problemi della Programmazione Lineare possono essere in:  
+- forma **CANONICA** (**NORMALE**): ci sono solo disuguaglianze, ogni variabile è $\small \ge 0$ e la funzione obiettivo è espressa come massimo.  
+  In caso di uguaglianze si rimpiazzano con la coppia di vincoli di disuguaglianze che esso induce.  
+- forma **STANDARD**: 
+  1. la <u>funzione obiettivo</u> è <u>espressa come <strong style="font-style:italic;">minimo</strong></u>; in caso sia espressa come *massimo* si moltiplica ogni valore per $\small (-1)$. Le costanti additive e moltiplicative positive possono essere trascurate. Le costanti negative possono essere eliminate cambiando il verso di ottimizzazione.  
+  2. tutte le <u>variabili</u> devono essere <u>positive o nulle</u>;  
+      - NON ci sono variabili LIBERE (perché possono assumere qualsiasi valore), ma nel caso si applica una sostituzione del tipo $\small x_i = U - V$, con $\small U \ge 0$ e $\small V \ge 0$.  
+      - NON ci sono variabili NEGATIVE, in caso si fanno sostituzioni del tipo $x_i = -y_i$ e $y_i \ge 0$.  
+      - il TERMINE NOTO deve essere positivo, in caso non lo sia si moltiplica tutto per $\small (-1)$.  
+  1. tutti i <u>vincoli</u> sono <u>espressi come uguaglianze</u>; in caso non lo siano:
+     - si aggiungono variabili di ***slack*** (positive) per i vincoli di disuguaglianza $\small <$ o $\small \le$;  
+     - si sottraggono variabili di ***surplus*** (negative) per i vincoli di disuguaglianza $\small >$ o $\small \ge$.  
+- nessuna delle due forme precedenti.  
+
+---
+
+Il Metodo del Simplesso, ideato nel 1947 da George Dantzig, si applica a problemi di Programmazione Lineare "***in forma standard***".  
 
 ## Bibliografia  
 
 - Caramia Massimiliano (<massimiliano.caramia@uniroma2.eu>), Tor Vergata;  
 - [Roma Massimo](#https://youtube.com/playlist?list=PLAQopGWlIcyZankm1hHCSOdBilSGC3Svg&si=VRGG98n4gnqOsjrH), Sapienza;  
-- [Alan Turista](#https://youtube.com/playlist?list=PL6ooPzL-5yGFQn6X6pGgxdg7TeIbPH7eA&si=hgFvfD5SpAPOIxpv).  
+- [Alan Turista](#https://youtube.com/playlist?list=PL6ooPzL-5yGFQn6X6pGgxdg7TeIbPH7eA&si=hgFvfD5SpAPOIxpv);  
+- Palmarini Marco (thanks).  

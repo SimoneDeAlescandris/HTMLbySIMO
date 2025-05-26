@@ -142,7 +142,7 @@ Il livello 5 (e successivi) definisce **linguaggi di programmazione ad alto live
 
 Dalla loro nascita fino ai giorni nostri, i calcolatori hanno subito una **crescita esponenziale** sia in termini di **complessità** sia di **potenza computazionale**. Per dare un'idea concreta di questo sviluppo, basti pensare che il [Commodore 64](https://it.wikipedia.org/wiki/Commodore_64), un personal computer rilasciato nel 1982, disponeva di una potenza di calcolo superiore a quella dei computer utilizzati dalla NASA nel 1969 per la missione Apollo 11 che portò l'uomo sulla Luna.  
 
-<div style="background-color: #252525; border-radius: 10px; padding: 15px; box-shadow: 0.5px 0.5px 2px black; margin-bottom: 1em;">  
+<div style="background-color: #252525; color:white; border-radius: 10px; padding: 15px; box-shadow: 0.5px 0.5px 2px black; margin-bottom: 1em;">  
 
 <span style="font-size: 15px; font-style: italic;">Serve un intermediario tra l'utente e l'hardware: il <strong>Sistema Operativo</strong>.</span>  
 
@@ -151,7 +151,7 @@ Data la crescente complessità dell'architettura hardware, se tutti i programmat
 <details>
 <summary style="margin-bottom:1em;">OBIETTIVO di un Sistema Operativo: <strong>Astrazione</strong> dell’hardware e <strong>gestione controllata</strong> delle risorse.</summary>  
 
-<div style="border: 1px solid #aaa; border-radius: 0 0 4px 4px; padding: 1em; margin-top: -1px;">
+<div style="border: 1px solid #aaa; border-radius: 0 0 4px 4px; padding: 1em; margin-top: -1px; margin-bottom:0.5em;">
 
 *I sistemi operativi trasformano gli orrori dell’hardware in eleganti astrazioni*.
 
@@ -179,7 +179,7 @@ Nei primissimi computer, il confine tra hardware e software era chiaro e cristal
 
 <details id="Babbage">  
 <summary style="margin-bottom:0.5em;">Il primo autentico calcolatore digitale fu progettato dal matematico inglese <strong>Charles Babbage</strong> (1792-1871).</summary>  
-<div style="border: 1px solid #aaa; border-radius: 0 0 4px 4px; padding: 1em; margin-top: -1px;">
+<div style="border: 1px solid #aaa; border-radius: 0 0 4px 4px; padding: 1em; margin-top: -1px; margin-bottom:0.5em;">
 
 > Per tutta la vita egli cercò di costruire la sua "**macchina analitica**", ma venne bloccato dalla tecnologia del proprio tempo, non ancora in grado di costruire ruote, ingranaggi e altri parti meccaniche necessarie con la precisione richiesta. La macchina che egli progetto non aveva un sistema operativo, ovviamente, tuttavia capì che sarebbe stato necessario un software per la sua gestione ed a tale scopo assunse la giovane donna **Ada Lovelace**, figlia del noto poeta britannico Lord Byron. Ella divenne la prima programmatrice del mondo ed il linguaggio di programmazione *Ada®* prende da lei il suo nome.  
  
@@ -203,7 +203,7 @@ Durante e dopo la Seconda Guerra Mondiale, si svilupparono i primi computer digi
 - In Inghilterra, fu realizzato il **COLOSSUS** (1943) per decifrare i messaggi codificati dalla macchina **ENIGMA** durante la guerra.  
   <details>
   <summary style="margin-bottom:1em; margin-top:-0.5em;">Al progetto, partecipò <strong>Alan Turing</strong>, ma rimase segreto per 30 anni.</summary>  
-  <div style="border: 1px solid #aaa; border-radius: 0 0 4px 4px; padding: 1em; margin-top: -1px;">  
+  <div style="border: 1px solid #aaa; border-radius: 0 0 4px 4px; padding: 1em; margin-top: -1px; margin-bottom:0.5em;">  
 
   Lo stimolo per lo sviluppo dei computer elettronici venne dalla Seconda Guerra Mondiale. Nella prima parte della guerra i sottomarini tedeschi stavano decimando la flotta britannica. Da Berlino gli ammiragli tedeschi spedivano i comandi via radio ai sottomarini; questi ordini potevano quindi essere intercettati dai britannici. Il problema era che i messaggi venivano codificati per mezzo di un dispositivo chiamato **ENIGMA**; il precursore di questa macchina era stato progettato da Thomas Jefferson che, oltre a essere stato il terzo presidente degli Stati Uniti d’America, fu anche un inventore dilettante.  
   All’inizio della guerra lo spionaggio britannico riuscì a procurarsi una macchina ENIGMA grazie all’aiuto dei servizi segreti polacchi che erano riusciti a rubarla ai tedeschi. Tuttavia, per poter decifrare un messaggio codificato occorreva svolgere un’enorme quantità di calcoli, ed era necessario poterlo fare molto velocemente, non appena il comando veniva intercettato, affinché ciò potesse essere di una qualche utilità. Per decodificare questi messaggi il governo britannico creò un laboratorio segretissimo per la costruzione di un computer chiamato **COLOSSUS**. Il famoso matematico inglese **Alan Turing** diede il suo aiuto alla progettazione di questa macchina. COLOSSUS divenne operativo nel 1943 ma, dato che il governo britannico tenne sotto segreto militare per 30 anni, praticamente ogni aspetto del progetto non ebbe alcun seguito. Vale la pena ricordarlo semplicemente perché fu il primo elaboratore digitale al mondo.
